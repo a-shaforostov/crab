@@ -25,10 +25,36 @@ class App extends Component {
     this.props.downloadFile({ data, filename: 'schedule.svg' });
   };
 
+  handleLoadData = (event) => {
+    event.target.files[0] &&
+    this.props.loadFile({ filename: event.target.files[0] });
+  };
+
+  handleSaveData = () => {
+    const { data } = this.props;
+    console.log(this.props);
+    debugger;
+    data &&
+    this.props.downloadFile({ data: JSON.stringify(data), filename: 'data.json' });
+  };
+
   render() {
     return (
       <div className={styles.App}>
-        <Button onClick={this.props.loadFile}>Open Data</Button>
+        <Button onClick={this.handleSaveData}>Save Data</Button>
+
+        <input
+          accept="application/json"
+          className={styles.inputFile}
+          id="button-data-load"
+          type="file"
+          onChange={this.handleLoadData}
+          hidden
+        />
+        <label htmlFor="button-data-load">
+          <Button component="span">Open Data</Button>
+        </label>
+
         <Button href='' onClick={this.handleDownloadSVG}>Save .svg</Button>
 
         <svg
@@ -52,6 +78,7 @@ class App extends Component {
 
 export default connect(
   {
+    data: state`data`,
     loadFile: signal`loadFile`,
     downloadFile: signal`downloadFile`,
   },

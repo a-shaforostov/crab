@@ -5,10 +5,7 @@ import * as actions from "./actions";
 
 import data from '../data';
 
-export const loadFile = set(
-  state`data`,
-  data
-);
+export const loadFile = actions.loadFile;
 
 export const downloadFile = actions.downloadFile;
 

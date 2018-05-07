@@ -1,5 +1,7 @@
 import computedIsAllChecked from "../computed/isAllChecked";
 import computedVisibleTodosUids from "../computed/visibleTodosUids";
+import {set} from "cerebral/operators";
+import {state} from "cerebral/tags";
 
 export function toggleAllChecked({ state, resolve }) {
   const isCompleted = !resolve.value(computedIsAllChecked);
@@ -35,4 +37,37 @@ export function downloadFile({ props }) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+}
+
+export async function loadFile({ state, props }) {
+
+  function readFile(file){
+    return new Promise((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onload = () => {
+        resolve(fr.result)
+      };
+      fr.readAsText(file);
+    });
+  }
+
+  const { filename } = props;
+
+  let data;
+  try {
+    data = await readFile(filename);
+  } catch(e) {
+    alert('Can`t read file');
+    return;
+  }
+
+  let dataObj;
+  try {
+    dataObj = JSON.parse(data);
+  } catch(e) {
+    alert('wrong file format');
+    return;
+  }
+
+  state.set('data', dataObj);
 }
