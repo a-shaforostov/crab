@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import styles from '../Schedule.less';
+import styles from './Ruler.less';
 
 class Ruler extends Component {
   render() {

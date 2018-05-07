@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from '@cerebral/react';
 import { state } from "cerebral/tags";
 
-import Ruler from './Ruler';
+import Ruler from '../../components/Ruler';
 
 import styles from './Schedule.less';
 
