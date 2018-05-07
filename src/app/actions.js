@@ -26,3 +26,13 @@ export function clearCompletedTodos({ state }) {
     }
   });
 }
+
+export function downloadFile({ props }) {
+  const { data, filename } = props;
+  const link = document.createElement("a");
+  link.download = filename;
+  link.href = data;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}

@@ -5,12 +5,11 @@ import { router, storage } from "./modules";
 
 export default Module({
   state: {
-    newTodoTitle: "",
-    todos: {},
-    filter: "all",
-    editingUid: null
   },
   signals: {
+    loadFile: sequences.loadFile,
+    downloadFile: sequences.downloadFile,
+
     rootRouted: sequences.redirectToAll,
     newTodoTitleChanged: sequences.changeNewTodoTitle,
     newTodoSubmitted: sequences.submitNewTodo,

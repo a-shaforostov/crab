@@ -3,6 +3,15 @@ import { set, toggle, unset, when } from "cerebral/operators";
 import { props, state } from "cerebral/tags";
 import * as actions from "./actions";
 
+import data from '../data';
+
+export const loadFile = set(
+  state`data`,
+  data
+);
+
+export const downloadFile = actions.downloadFile;
+
 export const redirectToAll = redirect("/all");
 
 export const changeNewTodoTitle = set(state`newTodoTitle`, props`title`);
