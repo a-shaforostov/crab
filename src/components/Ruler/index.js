@@ -1,23 +1,56 @@
-import React, { Component } from 'react';
+import React, {Component, Fragment} from 'react';
 
 import styles from './Ruler.less';
 
 class Ruler extends Component {
-  render() {
-    const { timeShift } = this.props;
+  constructor(props) {
+    super(props);
+    this.me = React.createRef();
+  }
 
+  drawMarkup = (timeShift) => {
     // creating hours line
     const hours = [];
     for (let i = 0; i <= 24; i++) {
       hours.push((i + timeShift) % 24);
     }
 
+    const elements = [];
+    const largeStep = 96 / 24; // 100% / 25 lines - 1h
+    const smallStep = largeStep / 4; // 15m
+    const y1 = '100%';
+    for (let i = 0; i < 24; i++) {
+      const lx = largeStep * i + 2;
+      const y2 = `${100-50}%`;
+      elements.push(<line x1={`${lx}%`} y1={y1} x2={`${lx}%`} y2={y2} stroke="black" strokeWidth="2" key={i} />);
+      const hr = `${hours[i]}`.padStart(2,0)+':00';
+      elements.push(<text y={y2} x={`${lx}%`} className={styles.Hour} key={`t${i}`} hour={hours[i]} index={i}>{hr}</text>);
+      for (let j = 1; j <= 3; j++) {
+        const sx = lx + smallStep * j;
+        const y2 = j === 2 ? `${100-50}%` : `${100-40}%`;
+        elements.push(<line x1={`${sx}%`} y1={y1} x2={`${sx}%`} y2={y2} stroke="black" key={`${i}-${j}`} />);
+      }
+    }
+    const lx = largeStep * 24 + 2;
+    const y2 = `${100-50}%`;
+    elements.push(<line x1={`${lx}%`} y1={y1} x2={`${lx}%`} y2={y2} stroke="black" strokeWidth="2" key={24} />);
+    const hr = `${hours[24]}`.padStart(2,0)+':00';
+    elements.push(<text y={y2} x={`${lx}%`} className={styles.Hour} key="t24" hour={hours[24]} index={24}>{hr}</text>);
+
     return (
-      <div className={styles.Ruler}>
-        {
-          hours.map((hour, index) => <div className={styles.Hour} key={index} hour={hour} index={index}>{hour}</div>)
-        }
-      </div>
+      <g>
+        {elements}
+      </g>
+    )
+  };
+
+  render() {
+    const { timeShift } = this.props;
+
+    return (
+      <svg className={styles.Ruler} height="100" y="50">
+        {this.drawMarkup(timeShift)}
+      </svg>
     )
   }
 }

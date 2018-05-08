@@ -4,7 +4,7 @@ import { state, signal } from "cerebral/tags";
 
 import Button from 'material-ui/Button';
 
-import Schedule from '../Schedule';
+import { RegularSchedule, OptimizedSchedule } from '../Schedule';
 
 import styles from './App.less';
 
@@ -34,11 +34,14 @@ class App extends Component {
     const { data } = this.props;
     console.log(this.props);
     debugger;
-    data &&
-    this.props.downloadFile({ data: JSON.stringify(data), filename: 'data.json' });
+    if (data) {
+      const uri = "data:application/json,"+encodeURIComponent(JSON.stringify(data));
+      this.props.downloadFile({ data: uri, filename: 'data.json' });
+    }
   };
 
   render() {
+    console.log(this.props.data);
     return (
       <div className={styles.App}>
         <Button onClick={this.handleSaveData}>Save Data</Button>
@@ -55,7 +58,10 @@ class App extends Component {
           <Button component="span">Open Data</Button>
         </label>
 
-        <Button href='' onClick={this.handleDownloadSVG}>Save .svg</Button>
+        <span>
+          Export:&nbsp;
+          <a href='' onClick={this.handleDownloadSVG}>svg</a>
+        </span>
 
         <svg
           className="schedule-svg"
@@ -64,8 +70,13 @@ class App extends Component {
           xmlns="http://www.w3.org/2000/svg"
           ref={this.scheduleRef}
         >
-          <rect fill="#345672" id="canvas_background" height="100%" width="100%" y="-1" x="-1"/>
-          <Schedule />
+          <rect fill="#345672" id="canvas_background" height="100%" width="100%" y="0" x="0"/>
+          <foreignObject width="100%" height="25%">
+            <RegularSchedule />
+          </foreignObject>
+          <foreignObject width="100%" height="50%" y="50%">
+            <OptimizedSchedule />
+          </foreignObject>
         </svg>
 
         <header className={styles.AppHeader}>
