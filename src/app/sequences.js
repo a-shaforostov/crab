@@ -7,6 +7,8 @@ import data from '../data';
 
 export const loadFile = actions.loadFile;
 
+export const setData = actions.setData; //TODO: REMOVE
+
 export const downloadFile = actions.downloadFile;
 
 export const redirectToAll = redirect("/all");

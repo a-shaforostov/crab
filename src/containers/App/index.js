@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "@cerebral/react";
 import { state, signal } from "cerebral/tags";
+import dataMock from '../../data.json';
 
 import Button from 'material-ui/Button';
 
@@ -40,6 +41,11 @@ class App extends Component {
     }
   };
 
+  componentDidMount = () => {
+    //TODO: REMOVE
+    this.props.setData({ data: dataMock });
+  };
+
   render() {
     console.log(this.props.data);
     return (
@@ -63,21 +69,24 @@ class App extends Component {
           <a href='' onClick={this.handleDownloadSVG}>svg</a>
         </span>
 
-        <svg
-          className="schedule-svg"
-          width="100%"
-          height="400"
-          xmlns="http://www.w3.org/2000/svg"
-          ref={this.scheduleRef}
-        >
-          <rect fill="#345672" id="canvas_background" height="100%" width="100%" y="0" x="0"/>
-          <foreignObject width="100%" height="25%">
-            <RegularSchedule />
-          </foreignObject>
-          <foreignObject width="100%" height="50%" y="50%">
-            <OptimizedSchedule />
-          </foreignObject>
-        </svg>
+        <div className={styles.SVGContainer}>
+          <svg
+            className={styles.SVG}
+            width="1800"
+            height="400"
+            xmlns="http://www.w3.org/2000/svg"
+            ref={this.scheduleRef}
+          >
+            {/*<rect fill="#345672" id="canvas_background" height="100%" width="100%" y="0" x="0"/>*/}
+            <rect fill="white" id="canvas_background" height="100%" width="100%" y="0" x="0"/>
+            <foreignObject width="100%" height="310">
+              <RegularSchedule />
+            </foreignObject>
+            {/*<foreignObject width="100%" height="50%" y="50%">*/}
+              {/*<OptimizedSchedule />*/}
+            {/*</foreignObject>*/}
+          </svg>
+        </div>
 
         <header className={styles.AppHeader}>
           <h1 className="App-title">Welcome to React</h1>
@@ -90,6 +99,7 @@ class App extends Component {
 export default connect(
   {
     data: state`data`,
+    setData: signal`setData`, //TODO: REMOVE
     loadFile: signal`loadFile`,
     downloadFile: signal`downloadFile`,
   },

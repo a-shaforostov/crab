@@ -48,7 +48,7 @@ class Ruler extends Component {
     const { timeShift } = this.props;
 
     return (
-      <svg className={styles.Ruler} height="100" y="50">
+      <svg className={styles.Ruler} height="104" y="44">
         {this.drawMarkup(timeShift)}
       </svg>
     )

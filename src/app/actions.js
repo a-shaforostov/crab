@@ -71,3 +71,8 @@ export async function loadFile({ state, props }) {
 
   state.set('data', dataObj);
 }
+
+//TODO: REMOVE
+export function setData({ state, props }) {
+  state.set('data', props.data);
+}

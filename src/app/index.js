@@ -5,9 +5,16 @@ import { router, storage } from "./modules";
 
 export default Module({
   state: {
+    colors: {
+      clBlue: '#0095f3',
+      clRed: '#ff4b8b',
+      clYellow: '#ffe632',
+      clGreen: '#00cc05',
+    }
   },
   signals: {
     loadFile: sequences.loadFile,
+    setData: sequences.setData, //TODO: REMOVE
     downloadFile: sequences.downloadFile,
 
     rootRouted: sequences.redirectToAll,
