@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from '@cerebral/react';
 import { state } from "cerebral/tags";
 
@@ -10,10 +9,6 @@ import TimeBlocks from '../../components/TimeBlocks';
 import WorkRange from '../../components/WorkRange';
 
 class Schedule extends Component {
-  // static propTypes = {
-  //   timeShift: PropTypes.number.isRequired,
-  // };
-
   static defaultProps = {
     timeShift: 5,
   };
@@ -30,7 +25,7 @@ class Schedule extends Component {
           milestones={schedule ? schedule.milestones : []}
           colors={colors}
         />
-        <Ruler timeShift={timeShift} workActivity={schedule ? schedule.activities.find(item => item.isWork) : null} />
+        <Ruler timeShift={timeShift} workActivity={schedule && schedule.activities && schedule.activities .find(item => item.isWork)} />
         <Activity timeShift={timeShift} activities={schedule ? schedule.activities : []} />
         <WorkRange timeShift={timeShift} activities={schedule ? schedule.activities : []} colors={colors} />
         <Title title={schedule ? schedule.name : null} />
@@ -39,19 +34,10 @@ class Schedule extends Component {
   }
 }
 
-export const RegularSchedule = connect(
+export default (key) => connect(
   {
     timeShift: state`data.timeShift`,
-    schedule: state`data.srcSchedule`,
-    colors: state`colors`,
-  },
-  Schedule
-);
-
-export const OptimizedSchedule = connect(
-  {
-    timeShift: state`data.timeShift`,
-    schedule: state`data.dstSchedule`,
+    schedule: state`data.${key}`,
     colors: state`colors`,
   },
   Schedule

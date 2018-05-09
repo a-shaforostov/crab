@@ -197,6 +197,199 @@
 
   },
   "dstSchedule": {
+    "name": "Optimized",
+    "milestones": [
+      {
+        "id": 1,
+        "name": "WAKE UP",
+        "time1": "08:00",
+        "color": "clBlue"
+      },
+      {
+        "id": 2,
+        "name": "KID FALLS ASLEEP",
+        "time1": "22:30",
+        "color": "clYellow"
+      }
+    ],
+    "activities": [
+      {
+        "id": 1,
+        "name": "ACTIVITY AT WORK",
+        "time1": "10:00",
+        "time2": "19:00",
+        "isWork": true
+      },
+      {
+        "id": 2,
+        "name": "ACTIVITY AT HOME",
+        "time1": "20:00",
+        "time2": "23:30"
+      },
+      {
+        "id": 3,
+        "name": "PUBLIC TRANSPORT",
+        "time1": "09:00",
+        "time2": "10:00",
+        "isTransport": true
+      },
+      {
+        "id": 4,
+        "name": "PUBLIC TRANSPORT",
+        "time1": "19:00",
+        "time2": "20:00",
+        "isTransport": true
+      }
+    ],
+    "timeBlocks": [
+      {
+        "id": 1,
+        "name": "SLEEP",
+        "time1": "23:30",
+        "time2": "08:00",
+        "type": "rest",
+        "color": "clBlue",
+        "isHigh": false
+      },
+      {
+        "id": 2,
+        "name": "",
+        "time1": "08:00",
+        "time2": "09:00",
+        "type": "busy",
+        "color": "clRed",
+        "isHigh": false,
+        "isHidden": true
+      },
+      {
+        "id": 3,
+        "name": "PUBLIC TRANSPORT",
+        "time1": "09:00",
+        "time2": "10:00",
+        "type": "moving",
+        "color": "clRed",
+        "isHigh": false,
+        "isHidden": true
+      },
+      {
+        "id": 4,
+        "name": "STAND UP",
+        "time1": "10:00",
+        "time2": "10:30",
+        "type": "busy",
+        "color": "clRed",
+        "isHigh": true
+      },
+      {
+        "id": 5,
+        "name": "COFFEE",
+        "time1": "10:30",
+        "time2": "10:45",
+        "type": "rising",
+        "color": "clYellow",
+        "isHigh": true
+      },
+      {
+        "id": 6,
+        "name": "BACK TO FLOW",
+        "time1": "10:45",
+        "time2": "11:00",
+        "type": "rising",
+        "color": "clYellow",
+        "isHigh": true
+      },
+      {
+        "id": 7,
+        "name": "FLOW",
+        "time1": "11:00",
+        "time2": "12:00",
+        "type": "flow",
+        "color": "clGreen",
+        "isHigh": true
+      },
+      {
+        "id": 8,
+        "name": "LUNCH",
+        "time1": "12:00",
+        "time2": "12:45",
+        "type": "busy",
+        "color": "clRed",
+        "isHigh": true
+      },
+      {
+        "id": 9,
+        "name": "BACK TO FLOW AFTER LUNCH",
+        "time1": "12:45",
+        "time2": "13:45",
+        "type": "rising",
+        "color": "clYellow",
+        "isHigh": true
+      },
+      {
+        "id": 10,
+        "name": "FLOW",
+        "time1": "13:45",
+        "time2": "16:00",
+        "type": "flow",
+        "color": "clGreen",
+        "isHigh": true
+      },
+      {
+        "id": 11,
+        "name": "MEAL",
+        "time1": "16:00",
+        "time2": "16:15",
+        "type": "busy",
+        "color": "clRed",
+        "isHigh": true
+      },
+      {
+        "id": 12,
+        "name": "BACK TO FLOW",
+        "time1": "16:15",
+        "time2": "16:45",
+        "type": "rising",
+        "color": "clYellow",
+        "isHigh": true
+      },
+      {
+        "id": 13,
+        "name": "FLOW",
+        "time1": "16:45",
+        "time2": "19:00",
+        "type": "flow",
+        "color": "clGreen",
+        "isHigh": true
+      },
+      {
+        "id": 14,
+        "name": "PUBLIC TRANSPORT",
+        "time1": "19:00",
+        "time2": "20:00",
+        "type": "moving",
+        "color": "clRed",
+        "isHigh": false,
+        "isHidden": true
+      },
+      {
+        "id": 15,
+        "name": "TIME WITH KID AND FAMILY",
+        "time1": "20:00",
+        "time2": "22:30",
+        "type": "flow",
+        "color": "clGreen",
+        "isHigh": true
+      },
+      {
+        "id": 16,
+        "name": "PERSONAL TIME BEFORE SLIP",
+        "time1": "22:30",
+        "time2": "23:30",
+        "type": "rising",
+        "color": "clYellow",
+        "isHigh": true
+      }
+    ]
 
   },
   "outerConditions": [

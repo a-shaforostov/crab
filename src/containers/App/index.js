@@ -5,9 +5,11 @@ import dataMock from '../../data.json';
 
 import Button from 'material-ui/Button';
 
-import { RegularSchedule, OptimizedSchedule } from '../Schedule';
-
+import scheduleFactory from '../Schedule';
 import styles from './App.less';
+
+const RegularSchedule = scheduleFactory('srcSchedule');
+const OptimizedSchedule = scheduleFactory('dstSchedule');
 
 class App extends Component {
 
@@ -72,7 +74,7 @@ class App extends Component {
         <div className={styles.SVGContainer}>
           <svg
             width="1800"
-            height="400"
+            height="620"
             xmlns="http://www.w3.org/2000/svg"
             ref={this.scheduleRef}
             style={{fontFamily: 'Roboto, sans-serif'}}
@@ -82,15 +84,15 @@ class App extends Component {
             <foreignObject width="100%" height="310">
               <RegularSchedule />
             </foreignObject>
-            {/*<foreignObject width="100%" height="50%" y="50%">*/}
-              {/*<OptimizedSchedule />*/}
-            {/*</foreignObject>*/}
+            <foreignObject width="100%" height="310" y="310">
+              <OptimizedSchedule />
+            </foreignObject>
           </svg>
         </div>
 
-        <header className={styles.AppHeader}>
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
+        {/*<header className={styles.AppHeader}>*/}
+          {/*<h1 className="App-title">Welcome to React</h1>*/}
+        {/*</header>*/}
       </div>
     );
   }
