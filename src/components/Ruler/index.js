@@ -1,6 +1,10 @@
 import React, {Component, Fragment} from 'react';
 
-import styles from './Ruler.less';
+const styleHour = {
+  fill: 'black',
+  fontSize: '80%',
+  transform: 'translateX(-0.8%) translateY(-5px)'
+};
 
 class Ruler extends Component {
   constructor(props) {
@@ -8,7 +12,7 @@ class Ruler extends Component {
     this.me = React.createRef();
   }
 
-  drawMarkup = (timeShift) => {
+  drawMarkup = ({ timeShift, workActivity }) => {
     // creating hours line
     const hours = [];
     for (let i = 0; i <= 24; i++) {
@@ -24,7 +28,9 @@ class Ruler extends Component {
       const y2 = `${100-50}%`;
       elements.push(<line x1={`${lx}%`} y1={y1} x2={`${lx}%`} y2={y2} stroke="black" strokeWidth="2" key={i} />);
       const hr = `${hours[i]}`.padStart(2,0)+':00';
-      elements.push(<text y={y2} x={`${lx}%`} className={styles.Hour} key={`t${i}`} hour={hours[i]} index={i}>{hr}</text>);
+      if (!workActivity || (workActivity.time1 !== hr && workActivity.time2 !== hr)) {
+        elements.push(<text y={y2} x={`${lx}%`} style={styleHour} key={`t${i}`} hour={hours[i]} index={i}>{hr}</text>);
+      }
       for (let j = 1; j <= 3; j++) {
         const sx = lx + smallStep * j;
         const y2 = j === 2 ? `${100-50}%` : `${100-40}%`;
@@ -35,7 +41,7 @@ class Ruler extends Component {
     const y2 = `${100-50}%`;
     elements.push(<line x1={`${lx}%`} y1={y1} x2={`${lx}%`} y2={y2} stroke="black" strokeWidth="2" key={24} />);
     const hr = `${hours[24]}`.padStart(2,0)+':00';
-    elements.push(<text y={y2} x={`${lx}%`} className={styles.Hour} key="t24" hour={hours[24]} index={24}>{hr}</text>);
+    elements.push(<text y={y2} x={`${lx}%`} style={styleHour} key="t24" hour={hours[24]} index={24}>{hr}</text>);
 
     return (
       <g>
@@ -45,11 +51,11 @@ class Ruler extends Component {
   };
 
   render() {
-    const { timeShift } = this.props;
+    const { timeShift, workActivity } = this.props;
 
     return (
-      <svg className={styles.Ruler} height="104" y="44">
-        {this.drawMarkup(timeShift)}
+      <svg height="104" y="44" >
+        {this.drawMarkup({ timeShift, workActivity })}
       </svg>
     )
   }

@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import { splitBlock, calcBlockPlace, splitText, calcDuration } from '../../app/utils'
 
-import styles from './TimeBlocks.less';
+const styles = {
+  timeBlockLabel: {
+    fontSize: '65%',
+    fontWeight: '600',
+    letterSpacing: '0',
+    textAlign: 'right',
+    transformOrigin: 'center',
+  }
+};
 
 class TimeBlocks extends Component {
   renderBlocks = ({ timeBlocks, timeShift, colors }) => {
@@ -18,7 +26,7 @@ class TimeBlocks extends Component {
               {/*<rect x={0} y={0} width="100%" height="100%" fill="red" />*/}
               {
                 !act.isHidden &&
-                <text x="50%" y="50%" dx="0" dy={108} className={styles.TimeBlockLabel} textAnchor="end" transform="rotate(-90)">
+                <text x="50%" y="50%" dx="0" dy={108} style={styles.timeBlockLabel} textAnchor="end" transform="rotate(-90)">
                   {
                     splText.map((span, index) => (
                       <tspan
@@ -52,7 +60,7 @@ class TimeBlocks extends Component {
             {/*<rect x={0} y={0} width="100%" height="100%" fill="red" />*/}
             {
               !item.isHidden &&
-              <text x="50%" y="50%" dx="0" dy={108} className={styles.TimeBlockLabel} textAnchor="end" transform="rotate(-90)">
+              <text x="50%" y="50%" dx="0" dy={108} style={styles.timeBlockLabel} textAnchor="end" transform="rotate(-90)">
                 {
                   splText.map((span, index) => (
                     <tspan
@@ -78,7 +86,7 @@ class TimeBlocks extends Component {
   render() {
     const { timeShift, timeBlocks, milestones, colors } = this.props;
     return (
-      <svg className={styles.TimeBlocks} height="180" x="2%" y="112" width="96%">
+      <svg height="180" x="2%" y="112" width="96%">
         {timeBlocks && this.renderBlocks({ timeBlocks, timeShift, colors })}
         {milestones && this.renderMilestones({ milestones, timeShift, colors })}
       </svg>

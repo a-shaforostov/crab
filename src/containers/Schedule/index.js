@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from '@cerebral/react';
 import { state } from "cerebral/tags";
 
+import Title from '../../components/Title';
 import Ruler from '../../components/Ruler';
 import Activity from '../../components/Activity';
 import TimeBlocks from '../../components/TimeBlocks';
 import WorkRange from '../../components/WorkRange';
-
-import styles from './Schedule.less';
 
 class Schedule extends Component {
   // static propTypes = {
@@ -23,7 +22,7 @@ class Schedule extends Component {
     console.log(this.props);
     const { schedule, timeShift, colors } = this.props;
     return (
-      <svg className={styles.Schedule} height="310" width="100%">
+      <svg height="310" width="100%">
         {/*<rect x={0} y={0} height="100%" width="100%" fill="aqua" />*/}
         <TimeBlocks
           timeShift={timeShift}
@@ -31,9 +30,10 @@ class Schedule extends Component {
           milestones={schedule ? schedule.milestones : []}
           colors={colors}
         />
-        <Ruler timeShift={timeShift} />
+        <Ruler timeShift={timeShift} workActivity={schedule ? schedule.activities.find(item => item.isWork) : null} />
         <Activity timeShift={timeShift} activities={schedule ? schedule.activities : []} />
         <WorkRange timeShift={timeShift} activities={schedule ? schedule.activities : []} colors={colors} />
+        <Title title={schedule ? schedule.name : null} />
       </svg>
     )
   }

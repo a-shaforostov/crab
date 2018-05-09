@@ -71,11 +71,11 @@ class App extends Component {
 
         <div className={styles.SVGContainer}>
           <svg
-            className={styles.SVG}
             width="1800"
             height="400"
             xmlns="http://www.w3.org/2000/svg"
             ref={this.scheduleRef}
+            style={{fontFamily: 'Roboto, sans-serif'}}
           >
             {/*<rect fill="#345672" id="canvas_background" height="100%" width="100%" y="0" x="0"/>*/}
             <rect fill="white" id="canvas_background" height="100%" width="100%" y="0" x="0"/>

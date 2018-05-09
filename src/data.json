@@ -1,6 +1,7 @@
 {
   "timeShift": 5,
   "srcSchedule": {
+    "name": "Regular",
     "milestones": [
       {
         "id": 1,

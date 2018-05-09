@@ -42,8 +42,8 @@ export function calcDuration(block, pad = 2) {
  * @param timeShift
  * @returns {{x: number, w: number}}
  */
-export function calcBlockPlace(block, timeShift = 0) {
-  const minWidth = 100 / 24 / 60;
+export function calcBlockPlace(block, timeShift = 0, paddingX = 0) {
+  const minWidth = (100 - paddingX) / 24 / 60;
   const t1Min = timeToMins(block.time1) - timeShift * 60;
   const x = minWidth * t1Min;
   const { mins } = calcDuration(block);

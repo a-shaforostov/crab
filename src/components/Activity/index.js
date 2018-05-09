@@ -1,7 +1,22 @@
 import React, {Component, Fragment} from 'react';
 import { timeToMins, splitBlock, calcBlockPlace } from '../../app/utils'
 
-import styles from './Activity.less';
+const styles = {
+  activityBox: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
+  activityLabel: {
+    fontSize: '60%',
+    fontWeight: 'bold',
+    letterSpacing: '1px',
+    padding: '0',
+    margin: '0',
+    textAlign: 'center',
+  },
+};
 
 class Activity extends Component {
   renderActivities = () => {
@@ -20,8 +35,8 @@ class Activity extends Component {
            <line x1={x+'%'} y1="0" x2={x+'%'} y2="45" stroke="black" strokeWidth={2} key={block.id+'2'} />
            <line x1={(x+w)+'%'} y1="0" x2={(x+w)+'%'} y2="45" stroke="black" strokeWidth={2} key={block.id+'3'} />
            <foreignObject y={0} x={x+'%'} width={w+'%'} height="30">
-             <div className={styles.ActivityBox}>
-               <p xmlns="http://www.w3.org/1999/xhtml" className={styles.ActivityLabel}>{block.name}</p>
+             <div style={styles.activityBox}>
+               <p xmlns="http://www.w3.org/1999/xhtml" style={styles.activityLabel}>{block.name}</p>
              </div>
            </foreignObject>
          </g>
@@ -32,7 +47,7 @@ class Activity extends Component {
 
   render() {
     return (
-      <svg className={styles.Activity} height="45" y="148" x="2%" width="96%">
+      <svg height="45" y="148" x="2%" width="96%">
         {
           this.renderActivities()
         }
