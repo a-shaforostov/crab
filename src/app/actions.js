@@ -72,6 +72,29 @@ export async function loadFile({ state, props }) {
   state.set('data', dataObj);
 }
 
+export async function convertOnlineStart({ props }) {
+  debugger;
+  let response;
+  try {
+    response = await fetch(props.url, {
+      method: props.method,
+      body: JSON.stringify(props.body)
+    });
+  } catch(e) {
+    console.error(e);
+    return Promise.reject(e);
+  }
+  // debugger;
+  // const json = await response.json();
+  // debugger;
+  return response.json();
+}
+
+export async function convertOnlineSuccess({ props }) {
+  debugger;
+  set(state`resultJSON`, props.json);
+}
+
 //TODO: REMOVE
 export function setData({ state, props }) {
   state.set('data', props.data);

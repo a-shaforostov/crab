@@ -11,6 +11,13 @@ export const setData = actions.setData; //TODO: REMOVE
 
 export const downloadFile = actions.downloadFile;
 
+// export const convertOnline = [
+//   actions.convertOnlineStart,
+//   actions.convertOnlineSuccess,
+// ];
+
+export const convertOnline = actions.convertOnlineStart;
+
 export const redirectToAll = redirect("/all");
 
 export const changeNewTodoTitle = set(state`newTodoTitle`, props`title`);

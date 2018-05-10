@@ -17,6 +17,7 @@ export default Module({
     loadFile: sequences.loadFile,
     setData: sequences.setData, //TODO: REMOVE
     downloadFile: sequences.downloadFile,
+    convertOnline: sequences.convertOnline,
 
     rootRouted: sequences.redirectToAll,
     newTodoTitleChanged: sequences.changeNewTodoTitle,

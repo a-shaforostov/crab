@@ -30,6 +30,28 @@ class App extends Component {
     this.props.downloadFile({ data, filename: 'schedule.svg' });
   };
 
+  handleDownloadPDF = (e) => {
+    e.preventDefault();
+    // serialize svg in string
+    const serializer = new XMLSerializer();
+    let source = serializer.serializeToString(this.scheduleRef.current);
+    source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+    //convert svg source to URI data scheme.
+    const data = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
+    const url = 'https://api.cloudconvert.com/process';
+    const body = {
+      apikey: 'wUC1tZEizMi2dlf7G6Qei7tq3b89C61caBiuabsNSduCV882Tjg27erfBvVCyWrT',
+      inputformat: 'svg',
+      outputformat: 'pdf',
+      input: 'base64',
+      file: data,
+      filename: 'schedule.svg',
+      wait: false,
+      download: true,
+    };
+    this.props.convertOnline({ url, body, method: 'post' });
+  };
+
   handleLoadData = (event) => {
     event.target.files[0] &&
     this.props.loadFile({ filename: event.target.files[0] });
@@ -47,7 +69,7 @@ class App extends Component {
 
   componentDidMount = () => {
     //TODO: REMOVE
-    this.props.setData({ data: dataMock });
+    // this.props.setData({ data: dataMock });
   };
 
   render() {
@@ -71,7 +93,8 @@ class App extends Component {
 
         <span>
           Export:&nbsp;
-          <a href='' onClick={this.handleDownloadSVG}>svg</a>
+          <a href='' onClick={this.handleDownloadSVG}>svg</a>,&nbsp;
+          <a href='' onClick={this.handleDownloadPDF}>pdf</a>
         </span>
 
         <div className={styles.SVGContainer}>
@@ -125,6 +148,7 @@ export default connect(
     setData: signal`setData`, //TODO: REMOVE
     loadFile: signal`loadFile`,
     downloadFile: signal`downloadFile`,
+    convertOnline: signal`convertOnline`,
   },
   App
 );
