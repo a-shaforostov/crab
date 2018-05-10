@@ -10,6 +10,7 @@ export default Module({
       clRed: '#ff4b8b',
       clYellow: '#ffe632',
       clGreen: '#00cc05',
+      clMint: '#ccf5cd',
     }
   },
   signals: {

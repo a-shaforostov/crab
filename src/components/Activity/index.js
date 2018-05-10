@@ -29,7 +29,7 @@ class Activity extends Component {
          <g key={block.id}>
            {
              !block.isTransport &&
-             <rect x={x + '%'} y="0" width={w + '%'} height="30" key={block.id + '1'} fill="#e5fae6"/>
+             <rect x={x + '%'} y="0" width={w + '%'} height="30" key={block.id + '1'} fill="rgba(186, 241, 189, 0.5)"/>
            }
 
            <line x1={x+'%'} y1="0" x2={x+'%'} y2="45" stroke="black" strokeWidth={2} key={block.id+'2'} />

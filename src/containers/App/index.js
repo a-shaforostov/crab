@@ -6,6 +6,8 @@ import dataMock from '../../data.json';
 import Button from 'material-ui/Button';
 
 import scheduleFactory from '../Schedule';
+import ScheduleGraph from '../../components/ScheduleGraph';
+import OuterConditions from '../../components/OuterConditions';
 import styles from './App.less';
 
 const RegularSchedule = scheduleFactory('srcSchedule');
@@ -50,6 +52,7 @@ class App extends Component {
 
   render() {
     console.log(this.props.data);
+    const { colors, data, timeShift } = this.props;
     return (
       <div className={styles.App}>
         <Button onClick={this.handleSaveData}>Save Data</Button>
@@ -74,19 +77,35 @@ class App extends Component {
         <div className={styles.SVGContainer}>
           <svg
             width="1800"
-            height="620"
+            height="940"
             xmlns="http://www.w3.org/2000/svg"
             ref={this.scheduleRef}
             style={{fontFamily: 'Roboto, sans-serif'}}
           >
             {/*<rect fill="#345672" id="canvas_background" height="100%" width="100%" y="0" x="0"/>*/}
-            <rect fill="white" id="canvas_background" height="100%" width="100%" y="0" x="0"/>
-            <foreignObject width="100%" height="310">
+            {/*<rect fill="white" id="canvas_background" height="100%" width="100%" y="0" x="0"/>*/}
+            <svg width="100%" height="110" y="800" x="2%" width="96%">
+              {
+                data && data.dstSchedule && data.dstSchedule.chart &&
+                <ScheduleGraph
+                  color={colors[data.dstSchedule.chart]}
+                  timeBlocks={data.dstSchedule.timeBlocks}
+                  timeShift={timeShift}
+                />
+              }
+            </svg>
+            <svg x="2%" width="96%" height="940">
+              {
+                data && data.outerConditions &&
+                <OuterConditions conditions={data.outerConditions} timeShift={timeShift} />
+              }
+            </svg>
+            <svg width="100%" height="310" y="130">
               <RegularSchedule />
-            </foreignObject>
-            <foreignObject width="100%" height="310" y="310">
+            </svg>
+            <svg width="100%" height="310" y="460">
               <OptimizedSchedule />
-            </foreignObject>
+            </svg>
           </svg>
         </div>
 
@@ -101,6 +120,8 @@ class App extends Component {
 export default connect(
   {
     data: state`data`,
+    colors: state`colors`,
+    timeShift: state`data.timeShift`,
     setData: signal`setData`, //TODO: REMOVE
     loadFile: signal`loadFile`,
     downloadFile: signal`downloadFile`,
