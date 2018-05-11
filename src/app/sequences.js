@@ -18,6 +18,8 @@ export const downloadFile = actions.downloadFile;
 
 export const convertOnline = actions.convertOnlineStart;
 
+export const openSideEditor = set(state`sideEditor.visible`, props`visible`);
+
 export const redirectToAll = redirect("/all");
 
 export const changeNewTodoTitle = set(state`newTodoTitle`, props`title`);

@@ -11,6 +11,9 @@ export default Module({
       clYellow: '#ffe632',
       clGreen: '#00cc05',
       clMint: '#ccf5cd',
+    },
+    sideEditor: {
+      visible: false,
     }
   },
   signals: {
@@ -18,6 +21,7 @@ export default Module({
     setData: sequences.setData, //TODO: REMOVE
     downloadFile: sequences.downloadFile,
     convertOnline: sequences.convertOnline,
+    openSideEditor: sequences.openSideEditor,
 
     rootRouted: sequences.redirectToAll,
     newTodoTitleChanged: sequences.changeNewTodoTitle,
