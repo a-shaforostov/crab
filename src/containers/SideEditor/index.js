@@ -11,8 +11,11 @@ import Filter2 from '@material-ui/icons/Filter2';
 import Timeline from '@material-ui/icons/Timeline';
 
 import ConditionsEditor from './ConditionsEditor';
+import ScheduleEditorFactory from './ScheduleEditor';
 
 import { withStyles } from 'material-ui/styles';
+
+const ScheduleEditor = ScheduleEditorFactory('srcSchedule');
 
 const styles = theme => ({
   tabIcon: {
@@ -25,6 +28,13 @@ const styles = theme => ({
     height: '14px',
     fontSize: '70%',
   },
+  tabsContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    justifyContent: 'stretch',
+    overflowY: 'auto',
+  }
 });
 
 class SideEditor extends Component {
@@ -49,7 +59,10 @@ class SideEditor extends Component {
           <Tab icon={<Filter2 />} title="Schedule 2" className={classes.tabIcon}/>
           <Tab icon={<Timeline />} title="Graph" className={classes.tabIcon}/>
         </Tabs>
-        {activeTab === 0 && <ConditionsEditor />}
+        <div className={classes.tabsContainer}>
+          {activeTab === 0 && <ConditionsEditor />}
+          {activeTab === 1 && <ScheduleEditor />}
+        </div>
       </Fragment>
     )
   }

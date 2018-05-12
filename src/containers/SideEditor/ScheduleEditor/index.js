@@ -79,29 +79,39 @@ const styles = theme => ({
   },
 });
 
-class ConditionsEditor extends Component {
+const expPanels = [
+  {
+    title: 'Activities',
+    entity: 'activities',
+  },
+  {
+    title: 'Time Blocks',
+    entity: 'timeBlocks',
+  },
+  {
+    title: 'Milestones',
+    entity: 'milestones',
+  },
+];
+
+class ScheduleEditor extends Component {
   handleDelete = id => e => {
     e.stopPropagation();
     this.props.delete({ id });
   };
 
-  handleSelect = id => () => {
-    this.props.select({ entity: 'conditions', id });
+  handleSelect = (entity, id) => () => {
+    this.props.select({ entity, id });
   };
 
-  handleEdit = id => e => {
+  handleEdit = (entity, id) => e => {
     e.stopPropagation();
-    this.props.edit({ id, isCopy: false });
+    this.props.edit({ entity, id });
   };
 
-  handleNew = e => {
+  handleNew = entity => e => {
     e.stopPropagation();
-    this.props.edit({ id: -1, isCopy: false });
-  };
-
-  handleCopy = id => e => {
-    e.stopPropagation();
-    this.props.edit({ id, isCopy: true });
+    this.props.edit();
   };
 
   handleEnter = id => e => {
@@ -116,37 +126,39 @@ class ConditionsEditor extends Component {
     return (
       <div>
         <Tooltip title={"Edit"}><IconButton onClick={this.handleEdit(id)}><EditIcon /></IconButton></Tooltip>
-        <Tooltip title={"Copy"}><IconButton onClick={this.handleCopy(id)}><AddIcon /></IconButton></Tooltip>
+        <Tooltip title={"Copy"}><IconButton><AddIcon /></IconButton></Tooltip>
         <Tooltip title={"Delete"}><IconButton onClick={this.handleDelete(id)}><DeleteIcon /></IconButton></Tooltip>
       </div>
     )
   };
 
-  renderItems = (conditions) => {
-    const { classes, editor } = this.props;
-    return conditions.sort((a, b) => a.time1 > b.time1 ? 1 : -1).map((condition, index) => {
-      const isSelected = editor.selected === condition.id;
+  renderItems = (entity) => {
+    const { classes, editors, data } = this.props;
+    console.log(this.props);
+    debugger;
+    return data[entity].sort((a, b) => a.time1 > b.time1 ? 1 : -1).map((item, index) => {
+      const isSelected = editors[entity].selected === item.id;
       return (
         <div
-          key={condition.id}
+          key={item.id}
           className={classNames([classes.conditionItem, {[classes.conditionItemSelected]: isSelected}])}
           // tabindex={index+1}
-          onClick={this.handleSelect(condition.id)}
-          onKeyUp={this.handleEnter(condition.id)}
+          onClick={this.handleSelect(entity, item.id)}
+          onKeyUp={this.handleEnter(entity, item.id)}
         >
           <div className={classes.conditionItemStatic}>
             <div className={classes.timeGroup}>
-              <span className={classes.time}>{condition.time1}</span>
+              <span className={classes.time}>{item.time1}</span>
               <span>&nbsp;</span>
-              <span className={classes.time}>{condition.time2}</span>
+              <span className={classes.time}>{item.time2}</span>
             </div>
             <div className={classes.conditionName}>
-              {condition.name}&nbsp;<span className={classes.duration}>{calcDuration(condition).time}</span>
+              {item.name}&nbsp;<span className={classes.duration}>{calcDuration(item).time}</span>
             </div>
           </div>
           {
             isSelected &&
-            this.renderControls({ id: condition.id })
+            this.renderControls({ id: item.id })
           }
         </div>
       )
@@ -154,34 +166,40 @@ class ConditionsEditor extends Component {
   };
 
   render() {
-    const { classes, conditions } = this.props;
+    const { classes, data } = this.props;
     return (
-      <ExpansionPanel>
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon className={classes.headingIcon} />}
-          className={classes.panelSummary}
-        >
-          <Typography className={classes.heading}>Conditions</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails className={classes.panelDetail}>
-          {
-            conditions && this.renderItems(conditions)
-          }
-          <Button onClick={this.handleNew}>+ Add item</Button>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+      <div>
+        {
+          expPanels.map(item => {
+            return (
+              <ExpansionPanel key={item.entity}>
+                <ExpansionPanelSummary
+                  expandIcon={<ExpandMoreIcon className={classes.headingIcon} />}
+                  className={classes.panelSummary}
+                >
+                  <Typography className={classes.heading}>{item.title}</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails className={classes.panelDetail}>
+                  { data && data[item.entity] && this.renderItems(item.entity) }
+                  <Button onClick={this.handleNew(item.entity)}>+ Add item</Button>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            )
+          })
+        }
+      </div>
     )
   }
 }
 
-export default connect(
+export default schedule => connect(
   {
-    conditions: state`data.conditions`,
-    editor: state`sideEditor.conditions`,
+    data: state`data.${schedule}`,
+    editors: state`sideEditor.schedule.${schedule}`,
 
     delete: signal`deleteItem`,
     select: signal`selectItem`,
     edit: signal`editItem`,
   },
-  withStyles(styles)(ConditionsEditor)
+  withStyles(styles)(ScheduleEditor)
 );

@@ -73,7 +73,6 @@ export async function loadFile({ state, props }) {
 }
 
 export async function convertOnlineStart({ props }) {
-  debugger;
   let response;
   try {
     response = await fetch(props.url, {
@@ -91,25 +90,53 @@ export async function convertOnlineStart({ props }) {
 }
 
 export async function convertOnlineSuccess({ props }) {
-  debugger;
   set(state`resultJSON`, props.json);
 }
 
-export function deleteCondition({ state, props }) {
+export function selectItem({ state, props }) {
+  const schedule = props.schedule;
+  const entity = props.entity;
+  const id = props.id;
+
+  const path = ['sideEditor'];
+  if (schedule) path.push(schedule);
+  if (entity) path.push(entity);
+
+  state.set(`${path.join('.')}.selected`, id);
+}
+
+export function deleteItem({ state, props }) {
   const newList = state.get('data.conditions').filter(cond => cond.id !== props.id).map(item => {
     return { ...item }
   });
   state.set('data.conditions', newList);
 }
 
+export function editCondition({ state, props }) {
+  const id = props.id;
+  const isCopy = props.isCopy;
+  state.set(`sideEditor.conditions.edited`, id ? id : -1);
+  state.set(`sideEditor.conditions.isCopy`, isCopy);
+}
+
 export function saveEntityData({ state, props }) {
-  debugger;
   const data = props.data;
   const entity = props.entity;
-  const id = data.id;
-  const stateData = state.get(`data.${entity}`);
-  const newData = stateData.map(item => item.id === id ? data : item);
-  state.set(`data.${entity}`, newData);
+  let id = data.id;
+  if (id === -1) {
+    // new
+    id = Date.now();
+    const newDataItem = {
+      ...data,
+      id,
+    };
+    state.push(`data.${entity}`, newDataItem);
+  } else {
+    //edit
+    const stateData = state.get(`data.${entity}`);
+    const newData = stateData.map(item => item.id === id ? data : item);
+    state.set(`data.${entity}`, newData);
+  }
 }
 
 

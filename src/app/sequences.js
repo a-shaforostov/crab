@@ -30,14 +30,14 @@ export const convertOnline = actions.convertOnlineStart;
 export const openSideEditor = set(state`sideEditor.visible`, props`visible`);
 export const setSideEditorTab = set(state`sideEditor.activeTab`, props`tab`);
 
-export const deleteCondition = [
+export const deleteItem = [
   // set(state`data.conditions`, (state`data.conditions`).filter(id => id !== props`id`)),
-  actions.deleteCondition,
+  actions.deleteItem,
   set(state`sideEditor.conditions.selected`, null),
   undoPush,
 ];
-export const selectCondition = set(state`sideEditor.conditions.selected`, props`id`);
-export const editCondition = set(state`sideEditor.conditions.edited`, props`id`);
+export const selectItem = actions.selectItem;
+export const editItem = actions.editCondition;
 
 export const closeModalEditor = set(state`sideEditor.${props`entity`}.edited`, null);
 export const saveEntityData = [

@@ -4,6 +4,7 @@
  * @returns {number} - time in minutes
  */
 export function timeToMins(time) {
+  if (!time) return 0;
   const tArr = time.split(':');
   return +tArr[0] * 60 + +tArr[1];
 }
@@ -23,7 +24,8 @@ export function minsToTime(mins, pad = 2) {
  * @returns {{mins: *, time: string|*}}
  */
 export function calcDuration(block, pad = 2) {
-  let { time1, time2 } = block;
+  let { time1, time2 = '00:00' } = block;
+  if (!time1) return { mins: 0, time: '00:00' };
   time2 = time2 || time1;
   const time1Mins = timeToMins(time1);
   const time2Mins = timeToMins(time2);

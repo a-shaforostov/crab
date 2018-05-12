@@ -19,6 +19,36 @@ export default Module({
         selected: null,
         edited: null,
       },
+      schedule: {
+        srcSchedule: {
+          activities: {
+            selected: null,
+            edited: null,
+          },
+          timeBlocks: {
+            selected: null,
+            edited: null,
+          },
+          milestones: {
+            selected: null,
+            edited: null,
+          },
+        },
+        dstSchedule: {
+          activities: {
+            selected: null,
+            edited: null,
+          },
+          timeBlocks: {
+            selected: null,
+            edited: null,
+          },
+          milestones: {
+            selected: null,
+            edited: null,
+          },
+        },
+      }
     },
     undo: {
       stack: [],
@@ -33,9 +63,9 @@ export default Module({
     openSideEditor: sequences.openSideEditor,
     setSideEditorTab: sequences.setSideEditorTab,
     /* edit conditions */
-    deleteCondition: sequences.deleteCondition,
-    selectCondition: sequences.selectCondition,
-    editCondition: sequences.editCondition,
+    deleteItem: sequences.deleteItem,
+    selectItem: sequences.selectItem,
+    editItem: sequences.editItem,
     closeModalEditor: sequences.closeModalEditor,
     saveEntityData: sequences.saveEntityData,
     /* undo sequences */
