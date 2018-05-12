@@ -37,6 +37,25 @@ export function calcDuration(block, pad = 2) {
 }
 
 /**
+ * Calc finish time of block in mins and as time string
+ * @param block
+ * @param pad
+ * @returns {{mins: number|*, time: string|*}}
+ */
+export function calcFinish(block, pad = 2) {
+  let { time1, duration } = block;
+  const time1Mins = timeToMins(time1);
+  const durationMins = timeToMins(duration);
+  let time, mins;
+  mins = time1Mins + durationMins;
+  if (mins > 24 * 60) {
+    mins = mins - 24 * 60;
+  }
+  time = minsToTime(mins, pad);
+  return { mins, time };
+}
+
+/**
  * Calc block`s left position and width according to timeShift. Result is in %
  * @param block - time block
  * @param timeShift

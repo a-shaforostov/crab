@@ -8,7 +8,7 @@ import dataMock from '../../data.json';
 
 import scheduleFactory from '../Schedule';
 import ScheduleGraph from '../../components/ScheduleGraph';
-import OuterConditions from '../../components/OuterConditions';
+import Conditions from '../../components/Conditions';
 
 const RegularSchedule = scheduleFactory('srcSchedule');
 const OptimizedSchedule = scheduleFactory('dstSchedule');
@@ -52,8 +52,8 @@ class Content extends Component {
         </svg>
         <svg x="2%" width="96%" height="940">
           {
-            data && data.outerConditions &&
-            <OuterConditions conditions={data.outerConditions} timeShift={timeShift} />
+            data && data.conditions &&
+            <Conditions conditions={data.conditions} timeShift={timeShift} />
           }
         </svg>
         <svg width="100%" height="310" y="130">

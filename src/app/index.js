@@ -17,6 +17,7 @@ export default Module({
       activeTab: 0,
       conditions: {
         selected: null,
+        edited: null,
       },
     },
     undo: {
@@ -34,6 +35,9 @@ export default Module({
     /* edit conditions */
     deleteCondition: sequences.deleteCondition,
     selectCondition: sequences.selectCondition,
+    editCondition: sequences.editCondition,
+    closeModalEditor: sequences.closeModalEditor,
+    saveEntityData: sequences.saveEntityData,
     /* undo sequences */
     undoPush: sequences.undoPush,
     undoUndo: sequences.undoUndo,

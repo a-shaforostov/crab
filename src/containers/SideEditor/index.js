@@ -10,7 +10,7 @@ import Filter1 from '@material-ui/icons/Filter1';
 import Filter2 from '@material-ui/icons/Filter2';
 import Timeline from '@material-ui/icons/Timeline';
 
-import Conditions from './Conditions';
+import ConditionsEditor from './ConditionsEditor';
 
 import { withStyles } from 'material-ui/styles';
 
@@ -49,7 +49,7 @@ class SideEditor extends Component {
           <Tab icon={<Filter2 />} title="Schedule 2" className={classes.tabIcon}/>
           <Tab icon={<Timeline />} title="Graph" className={classes.tabIcon}/>
         </Tabs>
-        {activeTab === 0 && <Conditions />}
+        {activeTab === 0 && <ConditionsEditor />}
       </Fragment>
     )
   }

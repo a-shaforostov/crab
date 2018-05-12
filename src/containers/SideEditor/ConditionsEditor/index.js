@@ -84,8 +84,8 @@ const styles = theme => ({
   },
 });
 
-class Conditions extends Component {
-  handleDelete = id => (e) => {
+class ConditionsEditor extends Component {
+  handleDelete = id => e => {
     e.stopPropagation();
     this.props.delete({ id });
   };
@@ -94,7 +94,12 @@ class Conditions extends Component {
     this.props.select({ id });
   };
 
-  handleEnter = id => (e) => {
+  handleEdit = id => e => {
+    e.stopPropagation();
+    this.props.edit({ id });
+  };
+
+  handleEnter = id => e => {
     console.log('keycode', e.keyCode);
     if (e.keyCode == 13) {
       this.props.select({ id });
@@ -105,7 +110,7 @@ class Conditions extends Component {
     const { classes } = this.props;
     return (
       <div>
-        <Tooltip title={"Edit"}><IconButton><EditIcon /></IconButton></Tooltip>
+        <Tooltip title={"Edit"}><IconButton onClick={this.handleEdit(id)}><EditIcon /></IconButton></Tooltip>
         <Tooltip title={"Copy"}><IconButton><AddIcon /></IconButton></Tooltip>
         <Tooltip title={"Delete"}><IconButton onClick={this.handleDelete(id)}><DeleteIcon /></IconButton></Tooltip>
       </div>
@@ -166,11 +171,12 @@ class Conditions extends Component {
 
 export default connect(
   {
-    conditions: state`data.outerConditions`,
+    conditions: state`data.conditions`,
     editor: state`sideEditor.conditions`,
 
     delete: signal`deleteCondition`,
     select: signal`selectCondition`,
+    edit: signal`editCondition`,
   },
-  withStyles(styles)(Conditions)
+  withStyles(styles)(ConditionsEditor)
 );

@@ -19,8 +19,11 @@ import Redo from '@material-ui/icons/Redo';
 import SideEditor from '../SideEditor';
 import Content from '../Content';
 import HeaderBar from '../HeaderBar';
+import EditFormFactory from '../EditForm';
 
 import styles from './styles';
+
+const EditFormConditions = EditFormFactory('conditions');
 
 class App extends Component {
 
@@ -33,7 +36,7 @@ class App extends Component {
   };
 
   render() {
-    const { classes, sideEditorVisible, undoUndo, undoRedo, undoHead, undoStack } = this.props;
+    const { classes, sideEditorVisible, undoUndo, undoRedo, undoHead, undoStack, editConditions } = this.props;
     console.log('undoHead', undoStack.length, undoHead);
     return (
       <div className={classes.app}>
@@ -89,6 +92,8 @@ class App extends Component {
             <EditIcon />
           </Button>
         }
+
+        <EditFormConditions />
       </div>
     );
   }
@@ -97,6 +102,7 @@ class App extends Component {
 export default connect(
   {
     sideEditorVisible: state`sideEditor.visible`,
+
     undoHead: state`undo.head`,
     undoStack: state`undo.stack`,
 

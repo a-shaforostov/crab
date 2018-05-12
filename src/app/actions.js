@@ -96,11 +96,22 @@ export async function convertOnlineSuccess({ props }) {
 }
 
 export function deleteCondition({ state, props }) {
-  const newList = state.get('data.outerConditions').filter(cond => cond.id !== props.id).map(item => {
+  const newList = state.get('data.conditions').filter(cond => cond.id !== props.id).map(item => {
     return { ...item }
   });
-  state.set('data.outerConditions', newList);
+  state.set('data.conditions', newList);
 }
+
+export function saveEntityData({ state, props }) {
+  debugger;
+  const data = props.data;
+  const entity = props.entity;
+  const id = data.id;
+  const stateData = state.get(`data.${entity}`);
+  const newData = stateData.map(item => item.id === id ? data : item);
+  state.set(`data.${entity}`, newData);
+}
+
 
 // export const undoPush = [
 //   // splice(state`undo.stack`, state`undo.head` + 1, 20),

@@ -31,14 +31,19 @@ export const openSideEditor = set(state`sideEditor.visible`, props`visible`);
 export const setSideEditorTab = set(state`sideEditor.activeTab`, props`tab`);
 
 export const deleteCondition = [
-  // set(state`data.outerConditions`, (state`data.outerConditions`).filter(id => id !== props`id`)),
+  // set(state`data.conditions`, (state`data.conditions`).filter(id => id !== props`id`)),
   actions.deleteCondition,
   set(state`sideEditor.conditions.selected`, null),
   undoPush,
 ];
 export const selectCondition = set(state`sideEditor.conditions.selected`, props`id`);
+export const editCondition = set(state`sideEditor.conditions.edited`, props`id`);
 
-
+export const closeModalEditor = set(state`sideEditor.${props`entity`}.edited`, null);
+export const saveEntityData = [
+  actions.saveEntityData,
+  undoPush,
+];
 
 
 export const redirectToAll = redirect("/all");

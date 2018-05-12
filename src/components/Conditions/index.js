@@ -15,7 +15,7 @@ const styles = {
   },
 };
 
-class OuterConditions extends Component {
+class Conditions extends Component {
   renderConditions = ({ timeShift = 0, conditions = [] }) => {
     return conditions.map(cond => {
       return splitBlock(cond, timeShift).map((block, index) => {
@@ -65,4 +65,4 @@ class OuterConditions extends Component {
   }
 }
 
-export default OuterConditions;
+export default Conditions;
