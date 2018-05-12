@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { calcBlockPlace, splitText, calcDuration } from '../../app/utils'
+import { calcBlockPlace } from '../../app/utils'
 
 class WorkRange extends Component {
   renderRange = ({ activities, timeShift, colors }) => {

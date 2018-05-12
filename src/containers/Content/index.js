@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "@cerebral/react";
 import { state, signal } from "cerebral/tags";
-import classNames from 'classnames';
 
 import { withStyles } from 'material-ui/styles';
 
@@ -27,12 +26,12 @@ class Content extends Component {
   componentDidMount = () => {
 
     //TODO: REMOVE
-    // this.props.setData({ data: dataMock });
+    this.props.setData({ data: dataMock });
   };
 
   render() {
     console.log(this.props.data);
-    const { classes, colors, data, timeShift, svgRef } = this.props;
+    const { colors, data, timeShift } = this.props;
     return (
       <svg
         width="1800"
@@ -41,7 +40,7 @@ class Content extends Component {
         ref={window.svgRef}
         style={{fontFamily: 'Roboto, sans-serif'}}
       >
-        <svg width="100%" height="110" y="800" x="2%" width="96%">
+        <svg height="110" y="800" x="2%" width="96%">
           {
             data && data.dstSchedule && data.dstSchedule.chart &&
             <ScheduleGraph

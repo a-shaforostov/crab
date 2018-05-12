@@ -27,7 +27,10 @@ class Schedule extends Component {
           milestones={schedule ? schedule.milestones : []}
           colors={colors}
         />
-        <Ruler timeShift={timeShift} workActivity={schedule && schedule.activities && schedule.activities .find(item => item.isWork)} />
+        <Ruler
+          timeShift={timeShift}
+          workActivity={schedule && schedule.activities && schedule.activities.find(item => item.isWork)}
+        />
         <Activity timeShift={timeShift} activities={schedule ? schedule.activities : []} />
         <WorkRange timeShift={timeShift} activities={schedule ? schedule.activities : []} colors={colors} />
         <Title title={schedule ? schedule.name : null} />

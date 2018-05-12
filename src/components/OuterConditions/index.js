@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {timeToMins, calcBlockPlace, splitBlock, calcDuration, splitText} from '../../app/utils';
+import {calcBlockPlace, splitBlock, calcDuration, splitText} from '../../app/utils';
 
 const styles = {
   styleText: {
@@ -18,13 +18,13 @@ const styles = {
 class OuterConditions extends Component {
   renderConditions = ({ timeShift = 0, conditions = [] }) => {
     return conditions.map(cond => {
-      return splitBlock(cond, timeShift).map(block => {
+      return splitBlock(cond, timeShift).map((block, index) => {
         const splText = splitText(block.name, "sans-serif 65%", 108);
         const {x, w} = calcBlockPlace(block, timeShift);
         const duration = calcDuration(block).mins;
 
         return (
-          <svg x={x+'%'} y={0} width={w+'%'} height="100%">
+          <svg x={x+'%'} y={0} width={w+'%'} height="100%" key={`${cond.id}/${index}`}>
             <rect x={0} y={0} width="100%" height="100%" fill="url(#Pattern)" fillOpacity={cond.opacity || 0.5} />
             <text x="100" y="50%" dx="100" dy={0} style={styles.caption} textAnchor="middle" transform="rotate(-90)">
               {
@@ -49,7 +49,7 @@ class OuterConditions extends Component {
   };
 
   render() {
-    const { color, conditions, timeShift } = this.props;
+    const { conditions, timeShift } = this.props;
     return (
       <svg height="940" x="0" y="0" width="100%">
         <defs>

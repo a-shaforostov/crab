@@ -1,11 +1,20 @@
 import { redirect } from "@cerebral/router/operators";
-import { set, toggle, unset, when, push, shift, splice, increment } from "cerebral/operators";
+import { set, toggle, unset, when } from "cerebral/operators";
 import { props, state } from "cerebral/tags";
 import * as actions from "./actions";
 
-import data from '../data';
+// import data from '../data';
 
-export const loadFile = actions.loadFile;
+/* undo sequences */
+export const undoPush = actions.undoPush;
+export const undoUndo = actions.undoUndo;
+export const undoRedo = actions.undoRedo;
+
+export const loadFile = [
+  actions.undoClear,
+  actions.loadFile,
+  actions.undoPush,
+];
 
 export const setData = actions.setData; //TODO: REMOVE
 
@@ -19,25 +28,17 @@ export const downloadFile = actions.downloadFile;
 export const convertOnline = actions.convertOnlineStart;
 
 export const openSideEditor = set(state`sideEditor.visible`, props`visible`);
+export const setSideEditorTab = set(state`sideEditor.activeTab`, props`tab`);
 
-/* undo sequences */
-export const undoPush = [
-  splice(state`undo.stack`, 0, state`undo.head`),
-  push(state`undo.stack`, state`data`),
-  when (state`undo.stack`.length > 20),
-  {
-    true: shift(state`undo.stack`),
-  },
-  set(state`undo.head`, state`undo.stack`.length - 1),
+export const deleteCondition = [
+  // set(state`data.outerConditions`, (state`data.outerConditions`).filter(id => id !== props`id`)),
+  actions.deleteCondition,
+  set(state`sideEditor.conditions.selected`, null),
+  undoPush,
 ];
-export const undoUndo = [
-  set(state`data`, state`undo.stack[${state`undo.head`}]`),
-  increment(state`undo.head`, -1),
-];
-export const undoRedo = [
-  increment(state`undo.head`, 1),
-  set(state`data`, state`undo.stack[${state`undo.head`}]`),
-];
+export const selectCondition = set(state`sideEditor.conditions.selected`, props`id`);
+
+
 
 
 export const redirectToAll = redirect("/all");

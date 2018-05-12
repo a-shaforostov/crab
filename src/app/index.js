@@ -13,7 +13,11 @@ export default Module({
       clMint: '#ccf5cd',
     },
     sideEditor: {
-      visible: false,
+      visible: true,
+      activeTab: 0,
+      conditions: {
+        selected: null,
+      },
     },
     undo: {
       stack: [],
@@ -26,6 +30,10 @@ export default Module({
     downloadFile: sequences.downloadFile,
     convertOnline: sequences.convertOnline,
     openSideEditor: sequences.openSideEditor,
+    setSideEditorTab: sequences.setSideEditorTab,
+    /* edit conditions */
+    deleteCondition: sequences.deleteCondition,
+    selectCondition: sequences.selectCondition,
     /* undo sequences */
     undoPush: sequences.undoPush,
     undoUndo: sequences.undoUndo,

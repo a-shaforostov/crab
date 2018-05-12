@@ -1,5 +1,5 @@
-import React, {Component, Fragment} from 'react';
-import { timeToMins, splitBlock, calcBlockPlace } from '../../app/utils'
+import React, {Component} from 'react';
+import { splitBlock, calcBlockPlace } from '../../app/utils'
 
 const styles = {
   activityBox: {

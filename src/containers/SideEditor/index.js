@@ -1,36 +1,64 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from "@cerebral/react";
 import { state, signal } from "cerebral/tags";
 
+import Tabs, { Tab } from 'material-ui/Tabs';
+import Badge from 'material-ui/Badge';
+
+import Traffic from '@material-ui/icons/Traffic';
+import Filter1 from '@material-ui/icons/Filter1';
+import Filter2 from '@material-ui/icons/Filter2';
+import Timeline from '@material-ui/icons/Timeline';
+
+import Conditions from './Conditions';
+
 import { withStyles } from 'material-ui/styles';
 
-const drawerWidth = 240;
-
 const styles = theme => ({
+  tabIcon: {
+    minWidth: '60px',
+  },
+  badge: {
+    top: '6px',
+    width: '14px',
+    right: '7px',
+    height: '14px',
+    fontSize: '70%',
+  },
 });
 
 class SideEditor extends Component {
-  handleDrawerClose = () => {
-    this.setState({ open: false });
+  handleChangeTab = (event, value) => {
+    this.props.setSideEditorTab({ tab: value });
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, sideEditor } = this.props;
+    const { activeTab } = sideEditor;
     return (
-      <div></div>
+      <Fragment>
+        <Tabs
+          value={activeTab}
+          onChange={this.handleChangeTab}
+          fullWidth
+          indicatorColor="secondary"
+          textColor="secondary"
+        >
+          <Tab icon={<Traffic />} title="Conditions" className={classes.tabIcon}/>
+          <Tab icon={<Filter1 />} title="Schedule 1" className={classes.tabIcon}></Tab>
+          <Tab icon={<Filter2 />} title="Schedule 2" className={classes.tabIcon}/>
+          <Tab icon={<Timeline />} title="Graph" className={classes.tabIcon}/>
+        </Tabs>
+        {activeTab === 0 && <Conditions />}
+      </Fragment>
     )
   }
 }
 
 export default connect(
   {
-    data: state`data`,
-    colors: state`colors`,
-    timeShift: state`data.timeShift`,
-    setData: signal`setData`, //TODO: REMOVE
-    loadFile: signal`loadFile`,
-    downloadFile: signal`downloadFile`,
-    convertOnline: signal`convertOnline`,
+    sideEditor: state`sideEditor`,
+    setSideEditorTab: signal`setSideEditorTab`,
   },
   withStyles(styles)(SideEditor)
 );

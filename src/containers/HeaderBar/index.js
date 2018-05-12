@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "@cerebral/react";
-import { state, signal } from "cerebral/tags";
+import { signal } from "cerebral/tags";
 
 import { withStyles } from 'material-ui/styles';
 import Toolbar from 'material-ui/Toolbar';
@@ -22,9 +22,6 @@ const styles = theme => ({
     marginRight: 20,
     backgroundColor: '#ff5789',
     border: 0,
-    '&$hover': {
-      backgroundColor:  'green',
-    },
   },
 });
 

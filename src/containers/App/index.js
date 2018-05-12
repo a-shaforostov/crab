@@ -11,7 +11,7 @@ import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import Tooltip from 'material-ui/Tooltip';
 
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import CloseIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/ModeEdit';
 import Undo from '@material-ui/icons/Undo';
 import Redo from '@material-ui/icons/Redo';
@@ -28,8 +28,13 @@ class App extends Component {
     this.props.openSideEditor({ visible });
   };
 
+  componentDidMount = () => {
+    this.props.undoPush();
+  };
+
   render() {
-    const { classes, sideEditorVisible } = this.props;
+    const { classes, sideEditorVisible, undoUndo, undoRedo, undoHead, undoStack } = this.props;
+    console.log('undoHead', undoStack.length, undoHead);
     return (
       <div className={classes.app}>
 
@@ -50,10 +55,22 @@ class App extends Component {
         >
           <div className={classes.drawerHeader}>
             <div>
-              <Tooltip title="Undo"><IconButton><Undo /></IconButton></Tooltip>
-              <Tooltip title="Redo"><IconButton><Redo /></IconButton></Tooltip>
+              <Tooltip title="Undo">
+                <span>
+                  <IconButton onClick={undoUndo} disabled={undoHead <= 0}>
+                    <Undo />
+                  </IconButton>
+                </span>
+              </Tooltip>
+              <Tooltip title="Redo">
+                <span>
+                  <IconButton onClick={undoRedo} disabled={undoHead >= undoStack.length-1}>
+                    <Redo />
+                  </IconButton>
+                </span>
+              </Tooltip>
             </div>
-            <Tooltip title="Close"><IconButton onClick={this.handleToggleEditor(false)}><ChevronLeftIcon /></IconButton></Tooltip>
+            <Tooltip title="Close editor"><IconButton onClick={this.handleToggleEditor(false)}><CloseIcon /></IconButton></Tooltip>
           </div>
           <Divider />
           <SideEditor />
@@ -80,12 +97,17 @@ class App extends Component {
 export default connect(
   {
     sideEditorVisible: state`sideEditor.visible`,
+    undoHead: state`undo.head`,
+    undoStack: state`undo.stack`,
 
     setData: signal`setData`, //TODO: REMOVE
     loadFile: signal`loadFile`,
     downloadFile: signal`downloadFile`,
     convertOnline: signal`convertOnline`,
     openSideEditor: signal`openSideEditor`,
+    undoPush: signal`undoPush`,
+    undoUndo: signal`undoUndo`,
+    undoRedo: signal`undoRedo`,
   },
   withStyles(styles)(App)
 );

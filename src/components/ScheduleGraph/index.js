@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {timeToMins, calcBlockPlace, splitBlock} from '../../app/utils';
+import {calcBlockPlace, splitBlock} from '../../app/utils';
 import { area, curveBundle} from 'd3-shape';
 
 const styles = {
@@ -13,7 +13,7 @@ class ScheduleGraph extends Component {
   buildData = (timeBlocks, timeShift) => {
     const data = [];
     timeBlocks.forEach(act => {
-      splitBlock(act, timeShift).map(block => {
+      splitBlock(act, timeShift).forEach(block => {
         const { x, w } = calcBlockPlace(block, timeShift);
         data.push({ x: 1800*0.96 / 100 * (x + w/2), y: block.type, block });
       })
