@@ -66,9 +66,12 @@ class App extends Component {
           <Content />
         </div>
 
-        <Button variant="fab" color="primary" className={classes.fabEdit} onClick={this.handleToggleEditor(true)}>
-          <EditIcon />
-        </Button>
+        {
+          !sideEditorVisible &&
+          <Button variant="fab" color="primary" className={classes.fabEdit} onClick={this.handleToggleEditor(true)}>
+            <EditIcon />
+          </Button>
+        }
       </div>
     );
   }

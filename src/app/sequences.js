@@ -1,5 +1,5 @@
 import { redirect } from "@cerebral/router/operators";
-import { set, toggle, unset, when } from "cerebral/operators";
+import { set, toggle, unset, when, push, shift, splice, increment } from "cerebral/operators";
 import { props, state } from "cerebral/tags";
 import * as actions from "./actions";
 
@@ -19,6 +19,26 @@ export const downloadFile = actions.downloadFile;
 export const convertOnline = actions.convertOnlineStart;
 
 export const openSideEditor = set(state`sideEditor.visible`, props`visible`);
+
+/* undo sequences */
+export const undoPush = [
+  splice(state`undo.stack`, 0, state`undo.head`),
+  push(state`undo.stack`, state`data`),
+  when (state`undo.stack`.length > 20),
+  {
+    true: shift(state`undo.stack`),
+  },
+  set(state`undo.head`, state`undo.stack`.length - 1),
+];
+export const undoUndo = [
+  set(state`data`, state`undo.stack[${state`undo.head`}]`),
+  increment(state`undo.head`, -1),
+];
+export const undoRedo = [
+  increment(state`undo.head`, 1),
+  set(state`data`, state`undo.stack[${state`undo.head`}]`),
+];
+
 
 export const redirectToAll = redirect("/all");
 

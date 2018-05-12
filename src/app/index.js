@@ -14,6 +14,10 @@ export default Module({
     },
     sideEditor: {
       visible: false,
+    },
+    undo: {
+      stack: [],
+      head: -1,
     }
   },
   signals: {
@@ -22,6 +26,10 @@ export default Module({
     downloadFile: sequences.downloadFile,
     convertOnline: sequences.convertOnline,
     openSideEditor: sequences.openSideEditor,
+    /* undo sequences */
+    undoPush: sequences.undoPush,
+    undoUndo: sequences.undoUndo,
+    undoRedo: sequences.undoRedo,
 
     rootRouted: sequences.redirectToAll,
     newTodoTitleChanged: sequences.changeNewTodoTitle,
