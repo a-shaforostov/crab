@@ -1,6 +1,7 @@
-import {set} from "cerebral/operators";
-import {state} from "cerebral/tags";
-
+/**
+ * Default data for creating new sheet
+ * @type {{timeShift: number, srcSchedule: {name: string, milestones: Array, activities: Array, timeBlocks: Array}, dstSchedule: {name: string, milestones: Array, activities: Array, timeBlocks: Array}, conditions: Array, chart: {color: string, schedule: string}}}
+ */
 const defaultData = {
   timeShift: 5,
   srcSchedule: {
@@ -22,6 +23,10 @@ const defaultData = {
   },
 };
 
+/**
+ * Download file
+ * @param props
+ */
 export function downloadFile({ props }) {
   const { data, filename } = props;
   const link = document.createElement("a");
@@ -32,6 +37,12 @@ export function downloadFile({ props }) {
   document.body.removeChild(link);
 }
 
+/**
+ * Load data file
+ * @param state
+ * @param props
+ * @returns {Promise<void>}
+ */
 export async function loadFile({ state, props }) {
 
   function readFile(file){
@@ -65,30 +76,21 @@ export async function loadFile({ state, props }) {
   state.set('data', dataObj);
 }
 
-export async function convertOnlineStart({ props }) {
-  let response;
-  try {
-    response = await fetch(props.url, {
-      method: props.method,
-      body: JSON.stringify(props.body)
-    });
-  } catch(e) {
-    return Promise.reject(e);
-  }
-  // debugger;
-  // const json = await response.json();
-  // debugger;
-  return response.json();
-}
-
-export async function convertOnlineSuccess({ props }) {
-  set(state`resultJSON`, props.json);
-}
-
+/**
+ * Create new document in default state
+ * @param state
+ */
 export function clearDoc({ state }) {
   state.set('data', defaultData);
 }
 
+/**
+ * Build path to desired data in state
+ * @param props
+ * @param root
+ * @param item
+ * @returns {string}
+ */
 function pathBuilder(props, root, item) {
   const schedule = props.schedule;
   const entity = props.entity;
@@ -100,10 +102,20 @@ function pathBuilder(props, root, item) {
   return path.join('.');
 }
 
+/**
+ * Make item selected
+ * @param state
+ * @param props
+ */
 export function selectItem({ state, props }) {
   state.set(pathBuilder(props, 'sideEditor', 'selected'), props.id);
 }
 
+/**
+ * Delete item
+ * @param state
+ * @param props
+ */
 export function deleteItem({ state, props }) {
   const path = pathBuilder(props, 'data');
   const newList = state.get(path).filter(item => item.id !== props.id).map(item => {
@@ -112,6 +124,11 @@ export function deleteItem({ state, props }) {
   state.set(path, newList);
 }
 
+/**
+ * Open item editor
+ * @param state
+ * @param props
+ */
 export function editItem({ state, props }) {
   const id = props.id;
   const isCopy = props.isCopy;
@@ -119,10 +136,20 @@ export function editItem({ state, props }) {
   state.set(pathBuilder(props, 'sideEditor', 'isCopy'), isCopy);
 }
 
+/**
+ * Close item editor without saving
+ * @param state
+ * @param props
+ */
 export function closeModalEditor({ state, props }) {
   state.set(pathBuilder(props, 'sideEditor', 'edited'), null);
 }
 
+/**
+ * Save item
+ * @param state
+ * @param props
+ */
 export function saveItem({ state, props }) {
   const data = props.data;
   let id = data.id;
@@ -141,6 +168,7 @@ export function saveItem({ state, props }) {
     const newData = stateData.map(item => item.id === id ? data : item);
     state.set(path, newData);
   }
+  state.set(pathBuilder(props, 'sideEditor', 'selected'), id);
 }
 
 /**

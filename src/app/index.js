@@ -1,7 +1,5 @@
 import { Module } from "cerebral";
 import * as sequences from "./sequences";
-import { id } from "./providers";
-import { router } from "./modules";
 
 export default Module({
   state: {
@@ -59,7 +57,6 @@ export default Module({
     setData: sequences.setData,
     clearDoc: sequences.clearDoc,
     downloadFile: sequences.downloadFile,
-    convertOnline: sequences.convertOnline,
     /* common behavior */
     openSideEditor: sequences.openSideEditor,
     setSideEditorTab: sequences.setSideEditorTab,
@@ -74,13 +71,5 @@ export default Module({
     undoPush: sequences.undoPush,
     undoUndo: sequences.undoUndo,
     undoRedo: sequences.undoRedo,
-
-    rootRouted: sequences.redirectToAll,
   },
-  providers: {
-    id,
-  },
-  modules: {
-    router,
-  }
 });

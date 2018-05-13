@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from "@cerebral/react";
 import { state, signal } from "cerebral/tags";
-import { calcDuration, calcFinish } from 'app/utils';
+import { calcDuration, calcFinish, checkIntersection } from 'app/utils';
 
 import * as EditorForms from "./forms";
 import editorFactories from "./editors";
@@ -52,18 +52,24 @@ class EditForm extends Component {
   };
 
   validate = () => {
-    // if (!this.state.data.time1) {
-    //   this.handleError('Fill time');
-    //   return;
-    // }
-    // if (!this.state.data.opacity) {
-    //   this.handleError('Fill pattern');
-    //   return;
-    // }
-    // if (!this.state.data.name) {
-    //   this.handleError('Fill description');
-    //   return;
-    // }
+    const formObject = EditorForms[`${this.props.entityName}Form`]();
+    for (let i = 0; i < formObject.elements.length; i++) {
+      const el = formObject.elements[i];
+      if (el.options.required) {
+        const value = this.state.data[el.options.name];
+        if ( value === undefined || value === null || value === '') {
+          this.handleError(`Field "${el.options.label}" is required`);
+          return false;
+        }
+      }
+    }
+
+    if (this.props.entityName !== 'conditions') {
+      if (checkIntersection(this.state.data, this.props.data)) {
+        this.handleError(`Your event intersects with another one. Please check your time settings`);
+        return false;
+      }
+    }
     return true;
   };
 
@@ -92,7 +98,6 @@ class EditForm extends Component {
   handleChange = field => e => {
     const value = (e.target.type === 'checkbox') ? e.target.checked : e.target.value;
     let t1, t2, d;
-    // debugger;
     this.setState((state) => {
       switch (field) {
         case 'duration':

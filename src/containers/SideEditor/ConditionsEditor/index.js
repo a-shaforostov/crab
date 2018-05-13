@@ -131,7 +131,7 @@ class ConditionsEditor extends Component {
         <div
           key={condition.id}
           className={classNames([classes.conditionItem, {[classes.conditionItemSelected]: isSelected}])}
-          // tabindex={index+1}
+          tabIndex={index+1}
           onClick={this.handleSelect(condition.id)}
           onKeyUp={this.handleEnter(condition.id)}
         >

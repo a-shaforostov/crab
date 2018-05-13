@@ -28,10 +28,6 @@ class App extends Component {
     this.props.openSideEditor({ visible });
   };
 
-  componentDidMount = () => {
-    // this.props.undoPush();
-  };
-
   render() {
     const { classes, sideEditorVisible, undoUndo, undoRedo, undoHead, undoStack } = this.props;
     return (

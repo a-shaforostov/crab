@@ -66,7 +66,10 @@ export function calcFinish(block, pad = 2) {
 export function calcBlockPlace(block, timeShift = 0, paddingX = 0) {
   const minWidth = (100 - paddingX) / 24 / 60;
   const t1Min = timeToMins(block.time1) - timeShift * 60;
-  const x = minWidth * t1Min;
+  let x = minWidth * t1Min;
+  if (x < 0) {
+    x = 100 + x;
+  }
   const { mins } = calcDuration(block);
   const w = minWidth * mins;
 
@@ -77,7 +80,7 @@ export function calcBlockPlace(block, timeShift = 0, paddingX = 0) {
  * if timeShift breaks block then split this block on two parts else just wrap it in array
  * @param block - any time block with time1 & time2 properties
  * @param timeShift - the first hour that showed
- * @returns {*[]} - block split if needed
+ * @returns {Array} - block split if needed
  */
 export function splitBlock(block, timeShift) {
   const t1 = timeToMins(block.time1);
@@ -125,11 +128,21 @@ export function checkIntersection(action, actions) {
 
     if (action.id === item.id) return false; //skip itself
 
-    return (
-      (actionTime.t1 < itemTime.t1 && actionTime.t2 > itemTime.t1) || // left side
-      (actionTime.t1 < itemTime.t2 && actionTime.t2 > itemTime.t2) || // right side
-      (actionTime.t1 > itemTime.t1 && actionTime.t2 < itemTime.t2)    // inside
-    )
+    let at1 = actionTime.t1;
+    let bt1 = itemTime.t1;
+    let at2 = actionTime.t1 < actionTime.t2 ? actionTime.t2 : actionTime.t2 + 24 * 60;
+    let bt2 = itemTime.t1 < itemTime.t2 ? itemTime.t2 : itemTime.t2 + 24 * 60;
+    const check1 = at1 < bt2 && at2 > bt1;
+    // and slide across day
+    if (at1 < bt1) {
+      at1 = at1 + 24 * 60;
+      at2 = at2 + 24 * 60;
+    } else {
+      bt1 = bt1 + 24 * 60;
+      bt2 = bt2 + 24 * 60;
+    }
+    const check2 = at1 < bt2 && at2 > bt1;
+    return check1 || check2;
   })
 }
 

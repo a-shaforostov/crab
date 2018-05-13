@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "@cerebral/react";
-import { signal } from "cerebral/tags";
+import { signal, state } from "cerebral/tags";
 
 import { withStyles } from 'material-ui/styles';
 import Toolbar from 'material-ui/Toolbar';
@@ -39,34 +39,19 @@ class HeaderBar extends Component {
   };
 
   handleDownloadPDF = (e) => {
-    // e.preventDefault();
-    // // serialize svg in string
-    // const serializer = new XMLSerializer();
-    // let source = serializer.serializeToString(window.svgRef.current);
-    // source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
-    // //convert svg source to URI data scheme.
-    // const data = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
-    // const url = 'https://api.cloudconvert.com/process';
-    // const body = {
-    //   apikey: 'wUC1tZEizMi2dlf7G6Qei7tq3b89C61caBiuabsNSduCV882Tjg27erfBvVCyWrT',
-    //   inputformat: 'svg',
-    //   outputformat: 'pdf',
-    //   input: 'base64',
-    //   file: data,
-    //   filename: 'schedule.svg',
-    //   wait: false,
-    //   download: true,
-    // };
-    // this.props.convertOnline({ url, body, method: 'post' });
+    e.preventDefault();
     window.print();
   };
 
-  handleLoadData = (event) => {
-    event.target.files[0] &&
-    this.props.loadFile({ filename: event.target.files[0] });
+  handleLoadData = (e) => {
+    e.preventDefault();
+    e.target.files[0] &&
+    this.props.loadFile({ filename: e.target.files[0] });
+    e.target.value = null;
   };
 
-  handleClearDoc = (event) => {
+  handleClearDoc = (e) => {
+    e.preventDefault();
     this.props.clearDoc();
   };
 
@@ -124,6 +109,7 @@ class HeaderBar extends Component {
 
 export default connect(
   {
+    data: state`data`,
     clearDoc: signal`clearDoc`,
     loadFile: signal`loadFile`,
     downloadFile: signal`downloadFile`,

@@ -156,7 +156,7 @@ class ScheduleEditor extends Component {
         <div
           key={item.id}
           className={classNames([classes.conditionItem, {[classes.conditionItemSelected]: isSelected}])}
-          // tabindex={index+1}
+          tabIndex={index+1}
           onClick={this.handleSelect(entity, item.id)}
           onKeyUp={this.handleEnter(entity, item.id)}
         >

@@ -2,7 +2,7 @@ export const conditionsForm = () => ({
   elements: [
     {
       type: 'TimeEditorFactory',
-      default: '00:00',
+      default: '12:00',
       options: {
         name: "time1",
         label: "Start time",
@@ -20,7 +20,7 @@ export const conditionsForm = () => ({
     },
     {
       type: 'TimeEditorFactory',
-      default: '00:00',
+      default: '13:00',
       options: {
         name: "time2",
         label: "Finish time",

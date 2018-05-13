@@ -24,7 +24,6 @@ class Content extends Component {
   };
 
   componentDidMount = () => {
-
     //TODO: REMOVE
     this.props.setData({ data: dataMock });
   };

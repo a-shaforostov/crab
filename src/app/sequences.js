@@ -1,9 +1,6 @@
-import { redirect } from "@cerebral/router/operators";
 import { set } from "cerebral/operators";
 import { props, state } from "cerebral/tags";
 import * as actions from "./actions";
-
-// import data from '../data';
 
 /* undo sequences */
 export const undoPush = actions.undoPush;
@@ -30,13 +27,6 @@ export const setData = [
 
 export const downloadFile = actions.downloadFile;
 
-// export const convertOnline = [
-//   actions.convertOnlineStart,
-//   actions.convertOnlineSuccess,
-// ];
-
-export const convertOnline = actions.convertOnlineStart;
-
 export const openSideEditor = set(state`sideEditor.visible`, props`visible`);
 export const setSideEditorTab = set(state`sideEditor.activeTab`, props`tab`);
 export const selectGraphSchedule = [
@@ -57,5 +47,3 @@ export const saveItem = [
   actions.saveItem,
   undoPush,
 ];
-
-export const redirectToAll = redirect("/all");
