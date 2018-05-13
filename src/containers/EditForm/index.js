@@ -3,7 +3,7 @@ import { connect } from "@cerebral/react";
 import { state, signal } from "cerebral/tags";
 import { calcDuration, calcFinish } from 'app/utils';
 
-import { conditionForm, activityForm, milestoneForm, timeBlocksForm } from "./forms";
+import * as EditorForms from "./forms";
 import editorFactories from "./editors";
 
 import { withStyles } from 'material-ui/styles';
@@ -15,8 +15,6 @@ import Dialog, {
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import { MenuItem } from 'material-ui/Menu';
 import Modal from 'material-ui/Modal';
 
 const styles = theme => ({
@@ -109,9 +107,10 @@ class EditForm extends Component {
           d = calcDuration({time1: value, time2: state.data.time2 }).time;
           t1 = value;
           break;
+        default: break;
       }
 
-      const result = {
+      return {
         data: {
           ...state.data,
           [field]: value,
@@ -120,8 +119,6 @@ class EditForm extends Component {
           duration: d ? d : state.data.duration,
         }
       };
-
-      return result;
     });
   };
 
@@ -135,8 +132,8 @@ class EditForm extends Component {
       data = props.data ? props.data.find(item => item.id === id) : null;
     }
     this.setState(() => {
-      console.log(data);
-      const defaults = timeBlocksForm().elements.reduce((def, elem) => ({ ...def, [elem.options.name]: elem.default }), {});
+      const formObject = EditorForms[`${props.entityName}Form`]();
+      const defaults = formObject.elements.reduce((def, elem) => ({ ...def, [elem.options.name]: elem.default }), {});
       const result = { data: { ...defaults, ...data } };
       if (isCopy) {
         result.data.id = -1;
@@ -150,7 +147,7 @@ class EditForm extends Component {
 
   render() {
     const { classes, entity, entityName } = this.props;
-    const formObject = timeBlocksForm();
+    const formObject = EditorForms[`${entityName}Form`]();
     return (
       <Fragment>
         <Dialog
@@ -170,83 +167,6 @@ class EditForm extends Component {
                     return (options.value !== undefined) ? editorFactories[element.type]({ options, children })() : null;
                   })
                 }
-
-                {/*<div className={classes.row}>*/}
-                  {/*<TextField*/}
-                    {/*autoFocus*/}
-                    {/*margin="normal"*/}
-                    {/*id="time1"*/}
-                    {/*name="time1"*/}
-                    {/*label="Start time"*/}
-                    {/*type="time"*/}
-                    {/*required*/}
-                    {/*InputLabelProps={{*/}
-                      {/*shrink: true,*/}
-                    {/*}}*/}
-                    {/*value={this.state.data.time1 || '00:00'}*/}
-                    {/*onChange={this.handleChange('time1')}*/}
-                  {/*/>*/}
-                  {/*<TextField*/}
-                    {/*margin="normal"*/}
-                    {/*id="duration"*/}
-                    {/*name="duration"*/}
-                    {/*label="Duration"*/}
-                    {/*type="time"*/}
-                    {/*InputLabelProps={{*/}
-                      {/*shrink: true,*/}
-                    {/*}}*/}
-                    {/*value={this.state.data.duration || '00:00'}*/}
-                    {/*onChange={this.handleChange('duration')}*/}
-                  {/*/>*/}
-                  {/*<TextField*/}
-                    {/*margin="normal"*/}
-                    {/*id="time2"*/}
-                    {/*name="time2"*/}
-                    {/*label="End time"*/}
-                    {/*type="time"*/}
-                    {/*InputLabelProps={{*/}
-                      {/*shrink: true,*/}
-                    {/*}}*/}
-                    {/*value={this.state.data.time2 || '00:00'}*/}
-                    {/*onChange={this.handleChange('time2')}*/}
-                  {/*/>*/}
-                {/*</div>*/}
-                {/*<TextField*/}
-                  {/*margin="dense"*/}
-                  {/*id="opacity"*/}
-                  {/*name="opacity"*/}
-                  {/*label="Pattern"*/}
-                  {/*select*/}
-                  {/*fullWidth*/}
-                  {/*required*/}
-                  {/*InputLabelProps={{*/}
-                    {/*shrink: true,*/}
-                  {/*}}*/}
-                  {/*value={this.state.data.opacity || '0.5'}*/}
-                  {/*onChange={this.handleChange('opacity')}*/}
-                {/*>*/}
-                  {/*<MenuItem key={1} value={0.4}>40%</MenuItem>*/}
-                  {/*<MenuItem key={2} value={0.5}>50%</MenuItem>*/}
-                  {/*<MenuItem key={3} value={0.6}>60%</MenuItem>*/}
-                  {/*<MenuItem key={4} value={0.7}>70%</MenuItem>*/}
-                  {/*<MenuItem key={5} value={0.8}>80%</MenuItem>*/}
-                  {/*<MenuItem key={6} value={0.9}>90%</MenuItem>*/}
-                {/*</TextField>*/}
-                {/*<TextField*/}
-                  {/*margin="dense"*/}
-                  {/*id="name"*/}
-                  {/*name="name"*/}
-                  {/*label="Description*"*/}
-                  {/*type="text"*/}
-                  {/*fullWidth*/}
-                  {/*multiline={true}*/}
-                  {/*rowsMax={3}*/}
-                  {/*InputLabelProps={{*/}
-                    {/*shrink: true,*/}
-                  {/*}}*/}
-                  {/*value={this.state.data.name || ''}*/}
-                  {/*onChange={this.handleChange('name')}*/}
-                {/*/>*/}
               </form>
             </DialogContent>
             <DialogActions>

@@ -2,14 +2,7 @@ import React from 'react';
 import { MenuItem } from 'material-ui/Menu';
 import TextField from 'material-ui/TextField';
 import Switch from 'material-ui/Switch';
-import { FormGroup, FormControlLabel } from 'material-ui/Form';
-import { withStyles } from 'material-ui/styles';
-
-const styles = theme => ({
-  time: {
-    marginRight: '30px',
-  },
-});
+import { FormControlLabel } from 'material-ui/Form';
 
 export const TimeEditorFactory = ({ options }) => (props) => {
   return (

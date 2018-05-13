@@ -34,7 +34,6 @@ class App extends Component {
 
   render() {
     const { classes, sideEditorVisible, undoUndo, undoRedo, undoHead, undoStack } = this.props;
-    console.log('undoHead', undoStack.length, undoHead);
     return (
       <div className={classes.app}>
 

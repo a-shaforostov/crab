@@ -1,7 +1,7 @@
 import { Module } from "cerebral";
 import * as sequences from "./sequences";
 import { id } from "./providers";
-import { router, storage } from "./modules";
+import { router } from "./modules";
 
 export default Module({
   state: {

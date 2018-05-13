@@ -3,7 +3,6 @@ import { connect } from "@cerebral/react";
 import { state, signal } from "cerebral/tags";
 
 import Tabs, { Tab } from 'material-ui/Tabs';
-import Badge from 'material-ui/Badge';
 
 import Traffic from '@material-ui/icons/Traffic';
 import Filter1 from '@material-ui/icons/Filter1';
@@ -16,7 +15,8 @@ import ScheduleEditorFactory from './ScheduleEditor';
 
 import { withStyles } from 'material-ui/styles';
 
-const ScheduleEditor = ScheduleEditorFactory('srcSchedule');
+const ScheduleEditorSrc = ScheduleEditorFactory('srcSchedule');
+const ScheduleEditorDst = ScheduleEditorFactory('dstSchedule');
 
 const styles = theme => ({
   tabIcon: {
@@ -62,8 +62,8 @@ class SideEditor extends Component {
         </Tabs>
         <div className={classes.tabsContainer}>
           {activeTab === 0 && <ConditionsEditor />}
-          {activeTab === 1 && <ScheduleEditor schedule="srcSchedule" />}
-          {activeTab === 2 && <ScheduleEditor schedule="dstSchedule" />}
+          {activeTab === 1 && <ScheduleEditorSrc schedule="srcSchedule" />}
+          {activeTab === 2 && <ScheduleEditorDst schedule="dstSchedule" />}
           {activeTab === 3 && <GraphEditor />}
         </div>
       </Fragment>

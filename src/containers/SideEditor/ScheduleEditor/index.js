@@ -9,7 +9,6 @@ import ExpansionPanel, {
   ExpansionPanelDetails,
 } from 'material-ui/ExpansionPanel';
 import Typography from 'material-ui/Typography';
-import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import Button from 'material-ui/Button';
 import Tooltip from 'material-ui/Tooltip';
@@ -129,18 +128,16 @@ class ScheduleEditor extends Component {
 
   handleNew = entity => e => {
     e.stopPropagation();
-    debugger;
     this.props.edit({ schedule: this.props.schedule, entity, isCopy: false });
   };
 
   handleEnter = (entity, id) => e => {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       this.props.select({ schedule: this.props.schedule, entity, id });
     }
   };
 
   renderControls = ({ entity, id }) => {
-    const { classes } = this.props;
     return (
       <div>
         <Tooltip title={"Edit"}><IconButton onClick={this.handleEdit(entity, id)}><EditIcon /></IconButton></Tooltip>

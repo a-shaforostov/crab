@@ -14,9 +14,7 @@ class Schedule extends Component {
   };
 
   render() {
-    console.log(this.props);
     const { schedule, timeShift, colors } = this.props;
-
 
     return (
       <svg height="310" width="100%">

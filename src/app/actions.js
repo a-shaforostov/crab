@@ -1,7 +1,5 @@
-import computedIsAllChecked from "../computed/isAllChecked";
-import computedVisibleTodosUids from "../computed/visibleTodosUids";
 import {set} from "cerebral/operators";
-import {state, props} from "cerebral/tags";
+import {state} from "cerebral/tags";
 
 const defaultData = {
   timeShift: 5,
@@ -75,7 +73,6 @@ export async function convertOnlineStart({ props }) {
       body: JSON.stringify(props.body)
     });
   } catch(e) {
-    console.error(e);
     return Promise.reject(e);
   }
   // debugger;

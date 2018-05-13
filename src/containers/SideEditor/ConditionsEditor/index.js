@@ -9,7 +9,6 @@ import ExpansionPanel, {
   ExpansionPanelDetails,
 } from 'material-ui/ExpansionPanel';
 import Typography from 'material-ui/Typography';
-import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import Button from 'material-ui/Button';
 import Tooltip from 'material-ui/Tooltip';
@@ -109,14 +108,12 @@ class ConditionsEditor extends Component {
   };
 
   handleEnter = id => e => {
-    console.log('keycode', e.keyCode);
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       this.props.select({ entity: 'conditions', id });
     }
   };
 
   renderControls = ({ id }) => {
-    const { classes } = this.props;
     return (
       <div>
         <Tooltip title={"Edit"}><IconButton onClick={this.handleEdit(id)}><EditIcon /></IconButton></Tooltip>

@@ -1,6 +1,4 @@
-import { TimeEditorFactory, TextEditorFactory, SelectEditorFactory } from './editors';
-
-export const conditionForm = () => ({
+export const conditionsForm = () => ({
   elements: [
     {
       type: 'TimeEditorFactory',
@@ -14,7 +12,7 @@ export const conditionForm = () => ({
     },
     {
       type: 'TimeEditorFactory',
-      default: '00:00',
+      default: null,
       options: {
         name: "duration",
         label: "Duration",
@@ -57,7 +55,7 @@ export const conditionForm = () => ({
   ]
 });
 
-export const activityForm = () => ({
+export const activitiesForm = () => ({
   elements: [
     {
       type: 'TimeEditorFactory',
@@ -113,7 +111,7 @@ export const activityForm = () => ({
   ]
 });
 
-export const milestoneForm = () => ({
+export const milestonesForm = () => ({
   elements: [
     {
       type: 'TimeEditorFactory',

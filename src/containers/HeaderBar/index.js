@@ -39,25 +39,26 @@ class HeaderBar extends Component {
   };
 
   handleDownloadPDF = (e) => {
-    e.preventDefault();
-    // serialize svg in string
-    const serializer = new XMLSerializer();
-    let source = serializer.serializeToString(window.svgRef.current);
-    source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
-    //convert svg source to URI data scheme.
-    const data = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
-    const url = 'https://api.cloudconvert.com/process';
-    const body = {
-      apikey: 'wUC1tZEizMi2dlf7G6Qei7tq3b89C61caBiuabsNSduCV882Tjg27erfBvVCyWrT',
-      inputformat: 'svg',
-      outputformat: 'pdf',
-      input: 'base64',
-      file: data,
-      filename: 'schedule.svg',
-      wait: false,
-      download: true,
-    };
-    this.props.convertOnline({ url, body, method: 'post' });
+    // e.preventDefault();
+    // // serialize svg in string
+    // const serializer = new XMLSerializer();
+    // let source = serializer.serializeToString(window.svgRef.current);
+    // source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+    // //convert svg source to URI data scheme.
+    // const data = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
+    // const url = 'https://api.cloudconvert.com/process';
+    // const body = {
+    //   apikey: 'wUC1tZEizMi2dlf7G6Qei7tq3b89C61caBiuabsNSduCV882Tjg27erfBvVCyWrT',
+    //   inputformat: 'svg',
+    //   outputformat: 'pdf',
+    //   input: 'base64',
+    //   file: data,
+    //   filename: 'schedule.svg',
+    //   wait: false,
+    //   download: true,
+    // };
+    // this.props.convertOnline({ url, body, method: 'post' });
+    window.print();
   };
 
   handleLoadData = (event) => {
@@ -72,7 +73,6 @@ class HeaderBar extends Component {
   handleSaveData = (e) => {
     e.preventDefault();
     const { data } = this.props;
-    console.log(this.props);
     if (data) {
       const uri = "data:application/json,"+encodeURIComponent(JSON.stringify(data));
       this.props.downloadFile({ data: uri, filename: 'data.json' });
@@ -80,7 +80,6 @@ class HeaderBar extends Component {
   };
 
   render() {
-    console.log(this.props.data);
     const { classes } = this.props;
     return (
       <Toolbar>
