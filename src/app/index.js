@@ -13,42 +13,40 @@ export default Module({
       clMint: '#ccf5cd',
     },
     sideEditor: {
-      visible: true,
+      visible: false,
       activeTab: 0,
       conditions: {
         selected: null,
         edited: null,
       },
-      schedule: {
-        srcSchedule: {
-          activities: {
-            selected: null,
-            edited: null,
-          },
-          timeBlocks: {
-            selected: null,
-            edited: null,
-          },
-          milestones: {
-            selected: null,
-            edited: null,
-          },
+      srcSchedule: {
+        activities: {
+          selected: null,
+          edited: null,
         },
-        dstSchedule: {
-          activities: {
-            selected: null,
-            edited: null,
-          },
-          timeBlocks: {
-            selected: null,
-            edited: null,
-          },
-          milestones: {
-            selected: null,
-            edited: null,
-          },
+        timeBlocks: {
+          selected: null,
+          edited: null,
         },
-      }
+        milestones: {
+          selected: null,
+          edited: null,
+        },
+      },
+      dstSchedule: {
+        activities: {
+          selected: null,
+          edited: null,
+        },
+        timeBlocks: {
+          selected: null,
+          edited: null,
+        },
+        milestones: {
+          selected: null,
+          edited: null,
+        },
+      },
     },
     undo: {
       stack: [],
@@ -56,41 +54,33 @@ export default Module({
     }
   },
   signals: {
+    /* services */
     loadFile: sequences.loadFile,
-    setData: sequences.setData, //TODO: REMOVE
+    setData: sequences.setData,
+    clearDoc: sequences.clearDoc,
     downloadFile: sequences.downloadFile,
     convertOnline: sequences.convertOnline,
+    /* common behavior */
     openSideEditor: sequences.openSideEditor,
     setSideEditorTab: sequences.setSideEditorTab,
+    selectGraphSchedule: sequences.selectGraphSchedule,
     /* edit conditions */
     deleteItem: sequences.deleteItem,
     selectItem: sequences.selectItem,
     editItem: sequences.editItem,
     closeModalEditor: sequences.closeModalEditor,
-    saveEntityData: sequences.saveEntityData,
+    saveItem: sequences.saveItem,
     /* undo sequences */
     undoPush: sequences.undoPush,
     undoUndo: sequences.undoUndo,
     undoRedo: sequences.undoRedo,
 
     rootRouted: sequences.redirectToAll,
-    newTodoTitleChanged: sequences.changeNewTodoTitle,
-    newTodoSubmitted: sequences.submitNewTodo,
-    todoNewTitleChanged: sequences.changeTodoTitle,
-    todoNewTitleSubmitted: sequences.submitTodoTitle,
-    removeTodoClicked: sequences.removeTodo,
-    todoDoubleClicked: sequences.editTodo,
-    toggleAllChanged: sequences.toggleAllChecked,
-    toggleTodoCompletedChanged: sequences.toggleTodoCompleted,
-    todoNewTitleAborted: sequences.abortEdit,
-    clearCompletedClicked: sequences.clearCompletedTodos,
-    filterClicked: sequences.changeFilter
   },
   providers: {
-    id
+    id,
   },
   modules: {
     router,
-    storage
   }
 });

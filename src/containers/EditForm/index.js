@@ -38,9 +38,18 @@ const styles = theme => ({
 });
 
 class EditForm extends Component {
+
   state = {
     data: {},
     error: null,
+  };
+
+  componentDidMount = () => {
+    this.updateStateFromProps(this.props);
+  };
+
+  componentWillReceiveProps = (props) => {
+    this.updateStateFromProps(props);
   };
 
   validate = () => {
@@ -62,13 +71,15 @@ class EditForm extends Component {
   handleSave = (e) => {
     e.preventDefault();
     if (this.validate()) {
-      this.props.saveEntityData({entity: this.props.entityName, data: this.state.data});
-      this.props.closeModalEditor({entity: this.props.entityName});
+      const { scheduleName, entityName } = this.props;
+      this.props.saveItem({ schedule: scheduleName, entity: entityName, data: this.state.data });
+      this.props.closeModalEditor({ schedule: scheduleName, entity: entityName});
     }
   };
 
   handleClose = () => {
-    this.props.closeModalEditor({ entity: this.props.entityName });
+    const { scheduleName, entityName } = this.props;
+    this.props.closeModalEditor({ schedule: scheduleName, entity: entityName });
   };
 
   handleError = message => {
@@ -112,7 +123,7 @@ class EditForm extends Component {
     });
   };
 
-  componentWillReceiveProps = (props) => {
+  updateStateFromProps = (props) => {
     const id = props.entity.edited;
     const isCopy = props.entity.isCopy;
     let data;
@@ -134,8 +145,7 @@ class EditForm extends Component {
   };
 
   render() {
-    const { classes, entity, entityName, data } = this.props;
-    console.log('state', this.state);
+    const { classes, entity, entityName } = this.props;
     return (
       <Fragment>
         <Dialog
@@ -256,14 +266,15 @@ class EditForm extends Component {
   }
 }
 
-export default entity => connect(
-  {
-    entityName: entityNameFactory(entity),
-    entity: state`sideEditor.${entity}`,
-    data: state`data.conditions`,
+export default ({ schedule, entity }) => {
+  return connect(
+    {
+      entity: state`sideEditor${schedule ? '.'+schedule : ''}.${entity}`,
+      data: state`data${schedule ? '.'+schedule : ''}.${entity}`,
 
-    closeModalEditor: signal`closeModalEditor`,
-    saveEntityData: signal`saveEntityData`,
-  },
-  withStyles(styles)(EditForm)
-);
+      closeModalEditor: signal`closeModalEditor`,
+      saveItem: signal`saveItem`,
+    },
+    withStyles(styles)(EditForm)
+  )
+};

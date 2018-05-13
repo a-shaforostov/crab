@@ -9,6 +9,7 @@ import Button from 'material-ui/Button';
 
 import Save from '@material-ui/icons/Save';
 import FolderOpen from '@material-ui/icons/FolderOpen';
+import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank';
 
 const styles = theme => ({
   title: {
@@ -64,6 +65,10 @@ class HeaderBar extends Component {
     this.props.loadFile({ filename: event.target.files[0] });
   };
 
+  handleClearDoc = (event) => {
+    this.props.clearDoc();
+  };
+
   handleSaveData = (e) => {
     e.preventDefault();
     const { data } = this.props;
@@ -92,15 +97,19 @@ class HeaderBar extends Component {
             onChange={this.handleLoadData}
             hidden
           />
+
+          <Button color="inherit" className={classes.menuButton} onClick={this.handleClearDoc}>
+            <CheckBoxOutlineBlank className={classes.leftIcon} />New
+          </Button>
+
           <label htmlFor="button-data-load">
             <Button color="inherit" className={classes.menuButton} component="span">
-              <FolderOpen className={classes.leftIcon} />
-              Open Data
+              <FolderOpen className={classes.leftIcon} />Open
             </Button>
           </label>
 
           <Button color="inherit" className={classes.menuButton} onClick={this.handleSaveData}>
-            <Save className={classes.leftIcon} />Save Data
+            <Save className={classes.leftIcon} />Save
           </Button>
         </div>
 
@@ -116,6 +125,7 @@ class HeaderBar extends Component {
 
 export default connect(
   {
+    clearDoc: signal`clearDoc`,
     loadFile: signal`loadFile`,
     downloadFile: signal`downloadFile`,
     convertOnline: signal`convertOnline`,

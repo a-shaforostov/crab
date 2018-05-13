@@ -19,7 +19,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 
+import EditFormFactory from 'containers/EditForm';
+
 import { withStyles } from 'material-ui/styles';
+
+const EditFormConditions = EditFormFactory({ entity: 'conditions' });
 
 const styles = theme => ({
   heading: {
@@ -82,7 +86,7 @@ const styles = theme => ({
 class ConditionsEditor extends Component {
   handleDelete = id => e => {
     e.stopPropagation();
-    this.props.delete({ id });
+    this.props.delete({ entity: 'conditions', id });
   };
 
   handleSelect = id => () => {
@@ -91,23 +95,23 @@ class ConditionsEditor extends Component {
 
   handleEdit = id => e => {
     e.stopPropagation();
-    this.props.edit({ id, isCopy: false });
+    this.props.edit({ entity: 'conditions', id, isCopy: false });
   };
 
   handleNew = e => {
     e.stopPropagation();
-    this.props.edit({ id: -1, isCopy: false });
+    this.props.edit({ entity: 'conditions', id: -1, isCopy: false });
   };
 
   handleCopy = id => e => {
     e.stopPropagation();
-    this.props.edit({ id, isCopy: true });
+    this.props.edit({ entity: 'conditions', id, isCopy: true });
   };
 
   handleEnter = id => e => {
     console.log('keycode', e.keyCode);
     if (e.keyCode == 13) {
-      this.props.select({ id });
+      this.props.select({ entity: 'conditions', id });
     }
   };
 
@@ -169,6 +173,9 @@ class ConditionsEditor extends Component {
           }
           <Button onClick={this.handleNew}>+ Add item</Button>
         </ExpansionPanelDetails>
+
+        <EditFormConditions entityName="conditions" />
+
       </ExpansionPanel>
     )
   }

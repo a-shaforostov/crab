@@ -51,7 +51,7 @@
         "name": "SLEEP",
         "time1": "23:30",
         "time2": "08:00",
-        "type": "rest",
+        "type": 0,
         "color": "clBlue",
         "isHigh": false
       },
@@ -60,7 +60,7 @@
         "name": "",
         "time1": "08:00",
         "time2": "09:00",
-        "type": "busy",
+        "type": 0,
         "color": "clRed",
         "isHigh": false,
         "isHidden": true
@@ -70,7 +70,7 @@
         "name": "PUBLIC TRANSPORT",
         "time1": "09:00",
         "time2": "10:00",
-        "type": "moving",
+        "type": 0,
         "color": "clRed",
         "isHigh": false,
         "isHidden": true
@@ -80,7 +80,7 @@
         "name": "STAND UP",
         "time1": "10:00",
         "time2": "10:30",
-        "type": "busy",
+        "type": 0,
         "color": "clRed",
         "isHigh": true
       },
@@ -89,7 +89,7 @@
         "name": "COFFEE",
         "time1": "10:30",
         "time2": "10:45",
-        "type": "rising",
+        "type": 1,
         "color": "clYellow",
         "isHigh": true
       },
@@ -98,7 +98,7 @@
         "name": "BACK TO FLOW",
         "time1": "10:45",
         "time2": "11:00",
-        "type": "rising",
+        "type": 1,
         "color": "clYellow",
         "isHigh": true
       },
@@ -107,7 +107,7 @@
         "name": "FLOW",
         "time1": "11:00",
         "time2": "12:00",
-        "type": "flow",
+        "type": 2,
         "color": "clGreen",
         "isHigh": true
       },
@@ -116,7 +116,7 @@
         "name": "LUNCH",
         "time1": "12:00",
         "time2": "12:45",
-        "type": "busy",
+        "type": 0,
         "color": "clRed",
         "isHigh": true
       },
@@ -125,7 +125,7 @@
         "name": "BACK TO FLOW AFTER LUNCH",
         "time1": "12:45",
         "time2": "13:45",
-        "type": "rising",
+        "type": 1,
         "color": "clYellow",
         "isHigh": true
       },
@@ -134,7 +134,7 @@
         "name": "FLOW",
         "time1": "13:45",
         "time2": "16:00",
-        "type": "flow",
+        "type": 2,
         "color": "clGreen",
         "isHigh": true
       },
@@ -143,7 +143,7 @@
         "name": "MEAL",
         "time1": "16:00",
         "time2": "16:15",
-        "type": "busy",
+        "type": 0,
         "color": "clRed",
         "isHigh": true
       },
@@ -152,7 +152,7 @@
         "name": "BACK TO FLOW",
         "time1": "16:15",
         "time2": "16:45",
-        "type": "rising",
+        "type": 1,
         "color": "clYellow",
         "isHigh": true
       },
@@ -161,7 +161,7 @@
         "name": "FLOW",
         "time1": "16:45",
         "time2": "19:00",
-        "type": "flow",
+        "type": 2,
         "color": "clGreen",
         "isHigh": true
       },
@@ -170,7 +170,7 @@
         "name": "PUBLIC TRANSPORT",
         "time1": "19:00",
         "time2": "20:00",
-        "type": "moving",
+        "type": 0,
         "color": "clRed",
         "isHigh": false,
         "isHidden": true
@@ -180,7 +180,7 @@
         "name": "TIME WITH KID AND FAMILY",
         "time1": "20:00",
         "time2": "22:30",
-        "type": "flow",
+        "type": 2,
         "color": "clGreen",
         "isHigh": true
       },
@@ -189,7 +189,7 @@
         "name": "PERSONAL TIME BEFORE SLIP",
         "time1": "22:30",
         "time2": "23:30",
-        "type": "rising",
+        "type": 1,
         "color": "clYellow",
         "isHigh": true
       }
@@ -389,8 +389,7 @@
         "color": "clYellow",
         "isHigh": true
       }
-    ],
-    "chart": "clMint"
+    ]
   },
   "conditions": [
     {
@@ -414,5 +413,9 @@
       "time2": "10:30",
       "opacity": 0.8
     }
-  ]
+  ],
+  "chart": {
+    "color": "clMint",
+    "schedule": "srcSchedule"
+  }
 }

@@ -6,12 +6,6 @@ export const router = Router({
   query: true,
   routes: [
     { path: "/", signal: "rootRouted" },
-    { path: "/:filter", signal: "filterClicked" }
   ]
 });
 
-export const storage = StorageProvider({
-  target: window.localStorage,
-  sync: { todos: "todos" },
-  prefix: "todomvc"
-});

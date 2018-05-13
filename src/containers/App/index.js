@@ -19,11 +19,8 @@ import Redo from '@material-ui/icons/Redo';
 import SideEditor from '../SideEditor';
 import Content from '../Content';
 import HeaderBar from '../HeaderBar';
-import EditFormFactory from '../EditForm';
 
 import styles from './styles';
-
-const EditFormConditions = EditFormFactory('conditions');
 
 class App extends Component {
 
@@ -32,11 +29,11 @@ class App extends Component {
   };
 
   componentDidMount = () => {
-    this.props.undoPush();
+    // this.props.undoPush();
   };
 
   render() {
-    const { classes, sideEditorVisible, undoUndo, undoRedo, undoHead, undoStack, editConditions } = this.props;
+    const { classes, sideEditorVisible, undoUndo, undoRedo, undoHead, undoStack } = this.props;
     console.log('undoHead', undoStack.length, undoHead);
     return (
       <div className={classes.app}>
@@ -88,12 +85,18 @@ class App extends Component {
 
         {
           !sideEditorVisible &&
-          <Button variant="fab" color="primary" className={classes.fabEdit} onClick={this.handleToggleEditor(true)}>
-            <EditIcon />
-          </Button>
+          <Tooltip title="Edit Sheet">
+            <Button
+              variant="fab"
+              color="primary"
+              className={classes.fabEdit}
+              onClick={this.handleToggleEditor(true)}
+            >
+              <EditIcon />
+            </Button>
+          </Tooltip>
         }
 
-        <EditFormConditions />
       </div>
     );
   }
@@ -106,10 +109,6 @@ export default connect(
     undoHead: state`undo.head`,
     undoStack: state`undo.stack`,
 
-    setData: signal`setData`, //TODO: REMOVE
-    loadFile: signal`loadFile`,
-    downloadFile: signal`downloadFile`,
-    convertOnline: signal`convertOnline`,
     openSideEditor: signal`openSideEditor`,
     undoPush: signal`undoPush`,
     undoUndo: signal`undoUndo`,

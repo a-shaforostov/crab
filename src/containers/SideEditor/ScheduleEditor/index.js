@@ -19,7 +19,16 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 
+import EditFormFactory from 'containers/EditForm';
+
 import { withStyles } from 'material-ui/styles';
+
+function getFormComponent({ schedule, entity }) {
+  return React.createElement(
+    EditFormFactory({ schedule, entity }),
+    {entityName: entity, scheduleName: schedule},
+  );
+}
 
 const styles = theme => ({
   heading: {
@@ -95,47 +104,51 @@ const expPanels = [
 ];
 
 class ScheduleEditor extends Component {
-  handleDelete = id => e => {
+  handleDelete = (entity, id) => e => {
     e.stopPropagation();
-    this.props.delete({ id });
+    e.preventDefault();
+    this.props.delete({ schedule: this.props.schedule, entity, id });
   };
 
   handleSelect = (entity, id) => () => {
-    this.props.select({ entity, id });
+    this.props.select({ schedule: this.props.schedule, entity, id });
   };
 
   handleEdit = (entity, id) => e => {
     e.stopPropagation();
-    this.props.edit({ entity, id });
+    this.props.edit({ schedule: this.props.schedule, entity, id, isCopy: false });
+  };
+
+  handleCopy = (entity, id) => e => {
+    e.stopPropagation();
+    this.props.edit({ schedule: this.props.schedule, entity, id, isCopy: true });
   };
 
   handleNew = entity => e => {
     e.stopPropagation();
-    this.props.edit();
+    debugger;
+    this.props.edit({ schedule: this.props.schedule, entity, isCopy: false });
   };
 
-  handleEnter = id => e => {
-    console.log('keycode', e.keyCode);
+  handleEnter = (entity, id) => e => {
     if (e.keyCode == 13) {
-      this.props.select({ id });
+      this.props.select({ schedule: this.props.schedule, entity, id });
     }
   };
 
-  renderControls = ({ id }) => {
+  renderControls = ({ entity, id }) => {
     const { classes } = this.props;
     return (
       <div>
-        <Tooltip title={"Edit"}><IconButton onClick={this.handleEdit(id)}><EditIcon /></IconButton></Tooltip>
-        <Tooltip title={"Copy"}><IconButton><AddIcon /></IconButton></Tooltip>
-        <Tooltip title={"Delete"}><IconButton onClick={this.handleDelete(id)}><DeleteIcon /></IconButton></Tooltip>
+        <Tooltip title={"Edit"}><IconButton onClick={this.handleEdit(entity, id)}><EditIcon /></IconButton></Tooltip>
+        <Tooltip title={"Copy"}><IconButton onClick={this.handleCopy(entity, id)}><AddIcon /></IconButton></Tooltip>
+        <Tooltip title={"Delete"}><IconButton onClick={this.handleDelete(entity, id)}><DeleteIcon /></IconButton></Tooltip>
       </div>
     )
   };
 
   renderItems = (entity) => {
     const { classes, editors, data } = this.props;
-    console.log(this.props);
-    debugger;
     return data[entity].sort((a, b) => a.time1 > b.time1 ? 1 : -1).map((item, index) => {
       const isSelected = editors[entity].selected === item.id;
       return (
@@ -158,7 +171,7 @@ class ScheduleEditor extends Component {
           </div>
           {
             isSelected &&
-            this.renderControls({ id: item.id })
+            this.renderControls({ entity, id: item.id })
           }
         </div>
       )
@@ -166,7 +179,7 @@ class ScheduleEditor extends Component {
   };
 
   render() {
-    const { classes, data } = this.props;
+    const { classes, data, schedule } = this.props;
     return (
       <div>
         {
@@ -183,6 +196,9 @@ class ScheduleEditor extends Component {
                   { data && data[item.entity] && this.renderItems(item.entity) }
                   <Button onClick={this.handleNew(item.entity)}>+ Add item</Button>
                 </ExpansionPanelDetails>
+
+                { getFormComponent({ schedule, entity: item.entity }) }
+
               </ExpansionPanel>
             )
           })
@@ -195,7 +211,7 @@ class ScheduleEditor extends Component {
 export default schedule => connect(
   {
     data: state`data.${schedule}`,
-    editors: state`sideEditor.schedule.${schedule}`,
+    editors: state`sideEditor.${schedule}`,
 
     delete: signal`deleteItem`,
     select: signal`selectItem`,

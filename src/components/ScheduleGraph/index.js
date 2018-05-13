@@ -39,13 +39,12 @@ class ScheduleGraph extends Component {
   };
 
   render() {
-    const { color, timeBlocks, timeShift } = this.props;
-    console.log('color', color);
+    const { color, timeBlocks, timeShift, name } = this.props;
     return (
       <svg height="110" x="0" y="0" width="100%">
         {/*<rect x={0} y={0} width="100%" height="100%" fill="red" opacity={0.5}/>*/}
         {color && this.renderGraph({ color, timeBlocks, timeShift })}
-        <text y="90%" x="50%" style={styles.styleText} fill="#71b773">INTELLECTUAL WORK PRODUCTIVITY PHASES</text>
+        <text y="90%" x="44%" style={styles.styleText} fill="#71b773">INTELLECTUAL WORK PRODUCTIVITY PHASES - {name} Schedule</text>
       </svg>
     )
   }

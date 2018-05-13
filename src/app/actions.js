@@ -3,31 +3,26 @@ import computedVisibleTodosUids from "../computed/visibleTodosUids";
 import {set} from "cerebral/operators";
 import {state, props} from "cerebral/tags";
 
-export function toggleAllChecked({ state, resolve }) {
-  const isCompleted = !resolve.value(computedIsAllChecked);
-  const currentTodosUids = resolve.value(computedVisibleTodosUids);
-
-  currentTodosUids.forEach(uid => {
-    state.set(`todos.${uid}.completed`, isCompleted);
-  });
-}
-
-export function addTodo({ state, id }) {
-  state.set(`todos.${id.create()}`, {
-    title: state.get("newTodoTitle"),
-    completed: false
-  });
-}
-
-export function clearCompletedTodos({ state }) {
-  const todos = state.get("todos");
-
-  Object.keys(todos).forEach(uid => {
-    if (todos[uid].completed) {
-      state.unset(`todos.${uid}`);
-    }
-  });
-}
+const defaultData = {
+  timeShift: 5,
+  srcSchedule: {
+    name: 'Regular',
+    milestones: [],
+    activities: [],
+    timeBlocks: [],
+  },
+  dstSchedule: {
+    name: 'Optimized',
+    milestones: [],
+    activities: [],
+    timeBlocks: [],
+  },
+  conditions: [],
+  chart: {
+    color: 'clMint',
+    schedule: 'dstSchedule',
+  },
+};
 
 export function downloadFile({ props }) {
   const { data, filename } = props;
@@ -93,36 +88,48 @@ export async function convertOnlineSuccess({ props }) {
   set(state`resultJSON`, props.json);
 }
 
-export function selectItem({ state, props }) {
+export function clearDoc({ state }) {
+  state.set('data', defaultData);
+}
+
+function pathBuilder(props, root, item) {
   const schedule = props.schedule;
   const entity = props.entity;
-  const id = props.id;
 
-  const path = ['sideEditor'];
+  const path = [root];
   if (schedule) path.push(schedule);
   if (entity) path.push(entity);
+  if (item) path.push(item);
+  return path.join('.');
+}
 
-  state.set(`${path.join('.')}.selected`, id);
+export function selectItem({ state, props }) {
+  state.set(pathBuilder(props, 'sideEditor', 'selected'), props.id);
 }
 
 export function deleteItem({ state, props }) {
-  const newList = state.get('data.conditions').filter(cond => cond.id !== props.id).map(item => {
+  const path = pathBuilder(props, 'data');
+  const newList = state.get(path).filter(item => item.id !== props.id).map(item => {
     return { ...item }
   });
-  state.set('data.conditions', newList);
+  state.set(path, newList);
 }
 
-export function editCondition({ state, props }) {
+export function editItem({ state, props }) {
   const id = props.id;
   const isCopy = props.isCopy;
-  state.set(`sideEditor.conditions.edited`, id ? id : -1);
-  state.set(`sideEditor.conditions.isCopy`, isCopy);
+  state.set(pathBuilder(props, 'sideEditor', 'edited'), id ? id : -1);
+  state.set(pathBuilder(props, 'sideEditor', 'isCopy'), isCopy);
 }
 
-export function saveEntityData({ state, props }) {
+export function closeModalEditor({ state, props }) {
+  state.set(pathBuilder(props, 'sideEditor', 'edited'), null);
+}
+
+export function saveItem({ state, props }) {
   const data = props.data;
-  const entity = props.entity;
   let id = data.id;
+  const path = pathBuilder(props, 'data');
   if (id === -1) {
     // new
     id = Date.now();
@@ -130,39 +137,31 @@ export function saveEntityData({ state, props }) {
       ...data,
       id,
     };
-    state.push(`data.${entity}`, newDataItem);
+    state.push(path, newDataItem);
   } else {
     //edit
-    const stateData = state.get(`data.${entity}`);
+    const stateData = state.get(path);
     const newData = stateData.map(item => item.id === id ? data : item);
-    state.set(`data.${entity}`, newData);
+    state.set(path, newData);
   }
 }
 
-
-// export const undoPush = [
-//   // splice(state`undo.stack`, state`undo.head` + 1, 20),
-//   push(state`undo.stack`, state`data`),
-//   when (state`undo.stack`, value => value.length > 20),
-//   {
-//     true: [
-//       shift(state`undo.stack`),
-//       set(state`undo.head`, 19),
-//     ],
-//     false: [
-//       increment(state`undo.head`, 1),
-//     ],
-//   },
-// ];
-
+/**
+ * Clear undo buffer
+ * @param state
+ */
 export function undoClear({ state }) {
   state.set('undo.stack', []);
   state.set('undo.head', -1);
 }
 
+/**
+ * Push state in buffer
+ * @param state
+ */
 export function undoPush({ state }) {
   state.splice(`undo.stack`, state.get('undo.head') + 1, 20);
-  state.push(`undo.stack`, Object.assign({}, state.get(`data`)));
+  state.push(`undo.stack`, JSON.parse(JSON.stringify(state.get(`data`))));
   const stack = state.get('undo.stack');
   if (stack.length > 20) {
     state.shift('undo.stack');
@@ -170,37 +169,37 @@ export function undoPush({ state }) {
   } else {
     state.increment('undo.head', 1);
   }
-};
+}
 
+/**
+ * Undo
+ * @param state
+ */
 export function undoUndo({ state }) {
   const head = state.get(`undo.head`);
 
-  // push current
-  // state.push(`undo.stack`, Object.assign({}, state.get(`data`)));
-  // const stack = state.get('undo.stack');
-  // if (stack.length > 20) {
-  //   state.shift('undo.stack');
-  //   state.set('undo.head', 19)
-  // } else {
-  //   state.increment('undo.head', -1);
-  // }
-
   // get prev
-  const val = Object.assign({}, state.get(`undo.stack`)[head-1]);
+  const val = Object.assign({}, JSON.parse(JSON.stringify(state.get(`undo.stack`)[head-1])));
   state.set('data', val);
   state.set('undo.head', head - 1);
 }
 
+/**
+ * Redo
+ * @param state
+ */
 export function undoRedo({ state }) {
   const head = state.get(`undo.head`);
   state.increment('undo.head', 1);
-  const val = Object.assign({}, state.get(`undo.stack`)[head+1]);
+  const val = Object.assign({}, JSON.parse(JSON.stringify(state.get(`undo.stack`)[head+1])));
   state.set('data', val);
-};
+}
 
-
-
-//TODO: REMOVE
+/**
+ * Demo data
+ * @param state
+ * @param props
+ */
 export function setData({ state, props }) {
   state.set('data', props.data);
 }

@@ -11,6 +11,7 @@ import Filter2 from '@material-ui/icons/Filter2';
 import Timeline from '@material-ui/icons/Timeline';
 
 import ConditionsEditor from './ConditionsEditor';
+import GraphEditor from './GraphEditor';
 import ScheduleEditorFactory from './ScheduleEditor';
 
 import { withStyles } from 'material-ui/styles';
@@ -55,13 +56,15 @@ class SideEditor extends Component {
           textColor="secondary"
         >
           <Tab icon={<Traffic />} title="Conditions" className={classes.tabIcon}/>
-          <Tab icon={<Filter1 />} title="Schedule 1" className={classes.tabIcon}></Tab>
-          <Tab icon={<Filter2 />} title="Schedule 2" className={classes.tabIcon}/>
+          <Tab icon={<Filter1 />} title="Regular Schedule" className={classes.tabIcon}></Tab>
+          <Tab icon={<Filter2 />} title="Optimized Schedule" className={classes.tabIcon}/>
           <Tab icon={<Timeline />} title="Graph" className={classes.tabIcon}/>
         </Tabs>
         <div className={classes.tabsContainer}>
           {activeTab === 0 && <ConditionsEditor />}
-          {activeTab === 1 && <ScheduleEditor />}
+          {activeTab === 1 && <ScheduleEditor schedule="srcSchedule" />}
+          {activeTab === 2 && <ScheduleEditor schedule="dstSchedule" />}
+          {activeTab === 3 && <GraphEditor />}
         </div>
       </Fragment>
     )

@@ -30,8 +30,8 @@ class Content extends Component {
   };
 
   render() {
-    console.log(this.props.data);
     const { colors, data, timeShift } = this.props;
+    const schedule = data && data.chart && data.chart.schedule;
     return (
       <svg
         width="1800"
@@ -42,11 +42,12 @@ class Content extends Component {
       >
         <svg height="110" y="800" x="2%" width="96%">
           {
-            data && data.dstSchedule && data.dstSchedule.chart &&
+            data && data.chart &&
             <ScheduleGraph
-              color={colors[data.dstSchedule.chart]}
-              timeBlocks={data.dstSchedule.timeBlocks}
+              color={colors[data.chart.color]}
+              timeBlocks={data[schedule].timeBlocks}
               timeShift={timeShift}
+              name={data[schedule].name}
             />
           }
         </svg>
