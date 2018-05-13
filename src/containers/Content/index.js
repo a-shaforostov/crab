@@ -4,7 +4,8 @@ import { state, signal } from "cerebral/tags";
 
 import { withStyles } from 'material-ui/styles';
 
-import dataMock from '../../data.json';
+//Uncomment this line if you want demo file get loaded
+// import dataMock from '../../data.json';
 
 import scheduleFactory from '../Schedule';
 import ScheduleGraph from '../../components/ScheduleGraph';
@@ -24,8 +25,8 @@ class Content extends Component {
   };
 
   componentDidMount = () => {
-    //TODO: REMOVE
-    this.props.setData({ data: dataMock });
+    //Uncomment this line if you want demo file get loaded
+    // this.props.setData({ data: dataMock });
   };
 
   render() {
@@ -73,7 +74,7 @@ export default connect(
     colors: state`colors`,
     timeShift: state`data.timeShift`,
 
-    setData: signal`setData`, //TODO: REMOVE
+    setData: signal`setData`,
   },
   withStyles(styles)(Content)
 );
