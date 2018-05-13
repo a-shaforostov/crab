@@ -3,7 +3,9 @@ import { connect } from "@cerebral/react";
 import { state, signal } from "cerebral/tags";
 import { calcDuration, calcFinish } from 'app/utils';
 
-import entityNameFactory from "computed/entityName";
+import { conditionForm } from "./forms";
+import editorFactories from "./editors";
+// import { conditionForm } from "./forms";
 
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
@@ -71,14 +73,14 @@ class EditForm extends Component {
   handleSave = (e) => {
     e.preventDefault();
     if (this.validate()) {
-      const { scheduleName, entityName } = this.props;
+      const { scheduleName = '', entityName } = this.props;
       this.props.saveItem({ schedule: scheduleName, entity: entityName, data: this.state.data });
       this.props.closeModalEditor({ schedule: scheduleName, entity: entityName});
     }
   };
 
   handleClose = () => {
-    const { scheduleName, entityName } = this.props;
+    const { scheduleName = '', entityName } = this.props;
     this.props.closeModalEditor({ schedule: scheduleName, entity: entityName });
   };
 
@@ -146,6 +148,7 @@ class EditForm extends Component {
 
   render() {
     const { classes, entity, entityName } = this.props;
+    const formObject = conditionForm();
     return (
       <Fragment>
         <Dialog
@@ -155,85 +158,93 @@ class EditForm extends Component {
         >
             <DialogTitle id="form-dialog-title">Edit {entityName.slice(0, -1)}</DialogTitle>
             <DialogContent>
-              <DialogContentText>
-              </DialogContentText>
+              <DialogContentText>{formObject.text}</DialogContentText>
               <form id="form" noValidate>
-                <div className={classes.row}>
-                  <TextField
-                    autoFocus
-                    margin="normal"
-                    id="time1"
-                    name="time1"
-                    label="Start time"
-                    type="time"
-                    required
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={this.state.data.time1 || '00:00'}
-                    onChange={this.handleChange('time1')}
-                  />
-                  <TextField
-                    margin="normal"
-                    id="duration"
-                    name="duration"
-                    label="Duration"
-                    type="time"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={this.state.data.duration || '00:00'}
-                    onChange={this.handleChange('duration')}
-                  />
-                  <TextField
-                    margin="normal"
-                    id="time2"
-                    name="time2"
-                    label="End time"
-                    type="time"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    value={this.state.data.time2 || '00:00'}
-                    onChange={this.handleChange('time2')}
-                  />
-                </div>
-                <TextField
-                  margin="dense"
-                  id="opacity"
-                  name="opacity"
-                  label="Pattern"
-                  select
-                  fullWidth
-                  required
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={this.state.data.opacity || '0.5'}
-                  onChange={this.handleChange('opacity')}
-                >
-                  <MenuItem key={1} value={0.4}>40%</MenuItem>
-                  <MenuItem key={2} value={0.5}>50%</MenuItem>
-                  <MenuItem key={3} value={0.6}>60%</MenuItem>
-                  <MenuItem key={4} value={0.7}>70%</MenuItem>
-                  <MenuItem key={5} value={0.8}>80%</MenuItem>
-                  <MenuItem key={6} value={0.9}>90%</MenuItem>
-                </TextField>
-                <TextField
-                  margin="dense"
-                  id="name"
-                  name="name"
-                  label="Description*"
-                  type="text"
-                  fullWidth
-                  multiline={true}
-                  rowsMax={3}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  value={this.state.data.name || ''}
-                  onChange={this.handleChange('name')}
-                />
+                {
+                  formObject.elements.map(element => {
+                    const { options, children } = element;
+                    options.onChange = this.handleChange(options.name);
+                    options.value = this.state.data[options.name];
+                    return options.value ? editorFactories[element.type]({ options, children })() : null;
+                  })
+                }
+
+                {/*<div className={classes.row}>*/}
+                  {/*<TextField*/}
+                    {/*autoFocus*/}
+                    {/*margin="normal"*/}
+                    {/*id="time1"*/}
+                    {/*name="time1"*/}
+                    {/*label="Start time"*/}
+                    {/*type="time"*/}
+                    {/*required*/}
+                    {/*InputLabelProps={{*/}
+                      {/*shrink: true,*/}
+                    {/*}}*/}
+                    {/*value={this.state.data.time1 || '00:00'}*/}
+                    {/*onChange={this.handleChange('time1')}*/}
+                  {/*/>*/}
+                  {/*<TextField*/}
+                    {/*margin="normal"*/}
+                    {/*id="duration"*/}
+                    {/*name="duration"*/}
+                    {/*label="Duration"*/}
+                    {/*type="time"*/}
+                    {/*InputLabelProps={{*/}
+                      {/*shrink: true,*/}
+                    {/*}}*/}
+                    {/*value={this.state.data.duration || '00:00'}*/}
+                    {/*onChange={this.handleChange('duration')}*/}
+                  {/*/>*/}
+                  {/*<TextField*/}
+                    {/*margin="normal"*/}
+                    {/*id="time2"*/}
+                    {/*name="time2"*/}
+                    {/*label="End time"*/}
+                    {/*type="time"*/}
+                    {/*InputLabelProps={{*/}
+                      {/*shrink: true,*/}
+                    {/*}}*/}
+                    {/*value={this.state.data.time2 || '00:00'}*/}
+                    {/*onChange={this.handleChange('time2')}*/}
+                  {/*/>*/}
+                {/*</div>*/}
+                {/*<TextField*/}
+                  {/*margin="dense"*/}
+                  {/*id="opacity"*/}
+                  {/*name="opacity"*/}
+                  {/*label="Pattern"*/}
+                  {/*select*/}
+                  {/*fullWidth*/}
+                  {/*required*/}
+                  {/*InputLabelProps={{*/}
+                    {/*shrink: true,*/}
+                  {/*}}*/}
+                  {/*value={this.state.data.opacity || '0.5'}*/}
+                  {/*onChange={this.handleChange('opacity')}*/}
+                {/*>*/}
+                  {/*<MenuItem key={1} value={0.4}>40%</MenuItem>*/}
+                  {/*<MenuItem key={2} value={0.5}>50%</MenuItem>*/}
+                  {/*<MenuItem key={3} value={0.6}>60%</MenuItem>*/}
+                  {/*<MenuItem key={4} value={0.7}>70%</MenuItem>*/}
+                  {/*<MenuItem key={5} value={0.8}>80%</MenuItem>*/}
+                  {/*<MenuItem key={6} value={0.9}>90%</MenuItem>*/}
+                {/*</TextField>*/}
+                {/*<TextField*/}
+                  {/*margin="dense"*/}
+                  {/*id="name"*/}
+                  {/*name="name"*/}
+                  {/*label="Description*"*/}
+                  {/*type="text"*/}
+                  {/*fullWidth*/}
+                  {/*multiline={true}*/}
+                  {/*rowsMax={3}*/}
+                  {/*InputLabelProps={{*/}
+                    {/*shrink: true,*/}
+                  {/*}}*/}
+                  {/*value={this.state.data.name || ''}*/}
+                  {/*onChange={this.handleChange('name')}*/}
+                {/*/>*/}
               </form>
             </DialogContent>
             <DialogActions>
