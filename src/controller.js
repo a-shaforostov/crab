@@ -6,10 +6,10 @@ import { Controller } from "cerebral";
 import app from "./app/index";
 
 const controller = Controller(app, {
+  devtools: null,
   // devtools: navigator.userAgent.toLowerCase().includes("chrome")
   //   ? Devtools({ host: "localhost:8686" })
-  //   : null
-  devtools: null,
+  //   : null,
 });
 
 export default controller;
