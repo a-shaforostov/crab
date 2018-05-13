@@ -3,9 +3,8 @@ import { connect } from "@cerebral/react";
 import { state, signal } from "cerebral/tags";
 import { calcDuration, calcFinish } from 'app/utils';
 
-import { conditionForm } from "./forms";
+import { conditionForm, activityForm, milestoneForm, timeBlocksForm } from "./forms";
 import editorFactories from "./editors";
-// import { conditionForm } from "./forms";
 
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
@@ -55,18 +54,18 @@ class EditForm extends Component {
   };
 
   validate = () => {
-    if (!this.state.data.time1) {
-      this.handleError('Fill time');
-      return;
-    }
-    if (!this.state.data.opacity) {
-      this.handleError('Fill pattern');
-      return;
-    }
-    if (!this.state.data.name) {
-      this.handleError('Fill description');
-      return;
-    }
+    // if (!this.state.data.time1) {
+    //   this.handleError('Fill time');
+    //   return;
+    // }
+    // if (!this.state.data.opacity) {
+    //   this.handleError('Fill pattern');
+    //   return;
+    // }
+    // if (!this.state.data.name) {
+    //   this.handleError('Fill description');
+    //   return;
+    // }
     return true;
   };
 
@@ -93,8 +92,9 @@ class EditForm extends Component {
   };
 
   handleChange = field => e => {
-    const value = e.target.value;
+    const value = (e.target.type === 'checkbox') ? e.target.checked : e.target.value;
     let t1, t2, d;
+    // debugger;
     this.setState((state) => {
       switch (field) {
         case 'duration':
@@ -135,12 +135,14 @@ class EditForm extends Component {
       data = props.data ? props.data.find(item => item.id === id) : null;
     }
     this.setState(() => {
-      const result = { data: { ...data } };
+      console.log(data);
+      const defaults = timeBlocksForm().elements.reduce((def, elem) => ({ ...def, [elem.options.name]: elem.default }), {});
+      const result = { data: { ...defaults, ...data } };
       if (isCopy) {
         result.data.id = -1;
       }
       if (!result.data.duration && result.data.time1 && result.data.time2) {
-        result.data.duration = calcDuration({time1: data.time1, time2: data.time2}).time;
+        result.data.duration = calcDuration({time1: result.data.time1, time2: result.data.time2}).time;
       }
       return result;
     });
@@ -148,7 +150,7 @@ class EditForm extends Component {
 
   render() {
     const { classes, entity, entityName } = this.props;
-    const formObject = conditionForm();
+    const formObject = timeBlocksForm();
     return (
       <Fragment>
         <Dialog
@@ -165,7 +167,7 @@ class EditForm extends Component {
                     const { options, children } = element;
                     options.onChange = this.handleChange(options.name);
                     options.value = this.state.data[options.name];
-                    return options.value ? editorFactories[element.type]({ options, children })() : null;
+                    return (options.value !== undefined) ? editorFactories[element.type]({ options, children })() : null;
                   })
                 }
 

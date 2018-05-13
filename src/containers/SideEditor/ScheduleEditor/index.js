@@ -92,14 +92,17 @@ const expPanels = [
   {
     title: 'Activities',
     entity: 'activities',
+    editTitle: 'Activity',
   },
   {
     title: 'Time Blocks',
     entity: 'timeBlocks',
+    editTitle: 'Time Block',
   },
   {
     title: 'Milestones',
     entity: 'milestones',
+    editTitle: 'Milestone',
   },
 ];
 
@@ -151,6 +154,7 @@ class ScheduleEditor extends Component {
     const { classes, editors, data } = this.props;
     return data[entity].sort((a, b) => a.time1 > b.time1 ? 1 : -1).map((item, index) => {
       const isSelected = editors[entity].selected === item.id;
+      const duration = entity === 'milestones' ? '' : calcDuration(item).time;
       return (
         <div
           key={item.id}
@@ -166,7 +170,7 @@ class ScheduleEditor extends Component {
               <span className={classes.time}>{item.time2}</span>
             </div>
             <div className={classes.conditionName}>
-              {item.name}&nbsp;<span className={classes.duration}>{calcDuration(item).time}</span>
+              {item.name}&nbsp;<span className={classes.duration}>{duration}</span>
             </div>
           </div>
           {

@@ -1,6 +1,8 @@
 import React from 'react';
 import { MenuItem } from 'material-ui/Menu';
 import TextField from 'material-ui/TextField';
+import Switch from 'material-ui/Switch';
+import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import { withStyles } from 'material-ui/styles';
 
 const styles = theme => ({
@@ -75,8 +77,28 @@ export const SelectEditorFactory = ({ options, children }) => (props) => {
   )
 };
 
+export const SwitchEditorFactory = ({ options, children }) => (props) => {
+  return (
+    <FormControlLabel
+      key={options.name}
+      control={
+        <Switch
+          checked={options.value}
+          onChange={options.onChange}
+          id={options.name}
+          key={options.name}
+          value={options.name}
+          color="primary"
+        />
+      }
+      label={options.label}
+    />
+  )
+};
+
 export default {
   TimeEditorFactory,
   TextEditorFactory,
   SelectEditorFactory,
+  SwitchEditorFactory,
 };
